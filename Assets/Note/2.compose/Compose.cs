@@ -13,7 +13,7 @@ public class Compose : MonoBehaviour
     void Start()
     {
         t2d = MatMerg();
-        output.texture = MatMerg();
+        output.texture = t2d;
     }
 
     Texture2D MatMerg()
@@ -39,8 +39,8 @@ public class Compose : MonoBehaviour
         {
             return true;
         }
-        if (scale < 0.01)
-            return false;
+        if (scale < 0.01) return false;
+
         List<Mat> scr_channels = new List<Mat>();
         List<Mat> dstt_channels = new List<Mat>();
         Core.split(scr, scr_channels);
@@ -55,9 +55,10 @@ public class Compose : MonoBehaviour
         for (int i = 0; i < 3; i++)
         {
             dstt_channels[i] = dstt_channels[i].mul(new Mat(scr_channels[3].size(), CvType.CV_8UC1, new Scalar(255.0 / scale)) - scr_channels[3], scale / 255.0);
-
             dstt_channels[i] += scr_channels[i].mul(scr_channels[3], scale / 255.0);
         }
+        //Debug.Log(dstt_channels[0]);
+
         Core.merge(dstt_channels, dst);
         return true;
     }
