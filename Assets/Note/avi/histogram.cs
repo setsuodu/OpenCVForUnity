@@ -24,38 +24,34 @@ public class histogram : MonoBehaviour
         m_showImage.sprite = sp;
 
         //MatND类型用于存放直方图数据
-        MatOfInt channels = new MatOfInt(1);
-        MatOfInt histSize = new MatOfInt(1);
-        MatOfFloat ranges = new MatOfFloat(1.0f);
-        Mat dstHist = new Mat(new Size(srcImage.width(), srcImage.height()), 1);
+        MatOfInt channels = new MatOfInt(0);
+        Mat dstHist = new Mat();
+        MatOfInt histSize = new MatOfInt(25);
+        MatOfFloat ranges = new MatOfFloat(0, 256);
         //calcHist(srcImage, 1, channels, Mat(), dstHist, dims, size, ranges);
-        Imgproc.calcHist(images, channels, srcImage, dstHist, histSize, ranges); //计算直方图
 
+        //Debug.Log(images.Count); //通道数=1，灰度通道
+        Imgproc.calcHist(images, channels, new Mat(), dstHist, histSize, ranges); //计算直方图
+
+        Debug.Log(dstHist.width() + "," + dstHist.height());
         Texture2D ha = new Texture2D(dstHist.width(), dstHist.height());
         Utils.matToTexture2D(dstHist, ha);
         Sprite haha = Sprite.Create(ha, new UnityEngine.Rect(0, 0, ha.width, ha.height), Vector2.zero);
         m_showImage.sprite = haha;
 
-        /*
         Mat dstImage = new Mat(size * scale, size, CvType.CV_8U, new Scalar(0));
 
         //获取最大值和最小值
         double minValue = 0;
         double maxValue = 0;
         //minMaxLoc(dstHist, &minValue, &maxValue, 0, 0);
-        Core.minMaxLoc(dstHist);
+        Core.minMaxLoc(dstHist); //坐标体系
         Debug.Log("最大值是：" + maxValue + ",最小值是：" + minValue);
-        */
+        Debug.Log(dstHist.width() + "," + dstHist.height());
 
-        //绘制直方图
-        /*
-        int hpt = saturate_cast<int>(0.9 * size);
         for (int i = 0; i < 256; i++)
         {
-            float binValue = dstHist.at<float>(i);
-            int realValue = saturate_cast<int>(binValue * hpt / maxValue);
-            Imgproc.rectangle(dstImage, Point(i * scale, size - 1), Point((i + 1) * scale - 1, size - realValue), Scalar(255));
+
         }
-        */
     }
 }
