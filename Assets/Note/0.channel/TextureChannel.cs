@@ -49,10 +49,10 @@ public class TextureChannel : MonoBehaviour
         //对拆分的通道数据合并
         //merge 与split 相反。可以将多个单通道图像合成一幅多通道图像。
         mergeImage = new Mat();
-        Core.merge(channels, srcImage);
+        Core.merge(channels, mergeImage);
 
-        t2d = new Texture2D(srcImage.width(), srcImage.height());
-        Utils.matToTexture2D(srcImage, t2d);
+        t2d = new Texture2D(mergeImage.width(), mergeImage.height());
         output.texture = t2d;
+        Utils.matToTexture2D(mergeImage, t2d);
     }
 }

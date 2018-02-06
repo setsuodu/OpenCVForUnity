@@ -7,8 +7,13 @@ using OpenCVForUnity;
 public class gradient : MonoBehaviour
 {
     [SerializeField] private Image sobelImage, laplaceImage, cannyImage;
-    Mat grayMat = new Mat();
-    Mat dstMat = new Mat();
+    Mat grayMat, dstMat;
+
+    void Awake()
+    {
+        grayMat = new Mat(); //不支持在外部new
+        dstMat = new Mat();
+    }
 
     void Start()
     {
