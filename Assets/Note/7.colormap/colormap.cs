@@ -11,7 +11,8 @@ public class colormap : MonoBehaviour
 
     void Start()
     {
-        srcMat = Imgcodecs.imread(Application.dataPath + "/Textures/sample.jpg", 0);
+        srcMat = Imgcodecs.imread(Application.dataPath + "/Textures/sample.jpg");
+        Imgproc.cvtColor(srcMat, srcMat, Imgproc.COLOR_BGR2RGB);
 
         //基础色度图
         for (int i = 0; i < 13; i++)
@@ -21,7 +22,7 @@ public class colormap : MonoBehaviour
             //Imgproc.applyColorMap(srcMat, dstMat, Imgproc.COLORMAP_JET);
             Imgproc.applyColorMap(srcMat, dstMat, i);
 
-            Texture2D t2d = new Texture2D(srcMat.width(), srcMat.height());
+            Texture2D t2d = new Texture2D(dstMat.width(), dstMat.height());
             Sprite sp = Sprite.Create(t2d, new UnityEngine.Rect(0, 0, t2d.width, t2d.height), Vector2.zero);
             m_imageList[i].sprite = sp;
             m_imageList[i].preserveAspect = true;
@@ -32,7 +33,18 @@ public class colormap : MonoBehaviour
     //自定义色度图
     void LutColorMap()
     {
+        Mat lut = Imgcodecs.imread(Application.dataPath + "/Textures/colorscale_hot.jpg");
 
+        Mat dstMat = new Mat();
+        dstMat.create(srcMat.size(), srcMat.type());
+        Imgproc.cvtColor(dstMat, dstMat, Imgproc.COLOR_BGR2RGB);
+        Core.LUT(srcMat, lut, dstMat); //没效果
+
+        Texture2D t2d = new Texture2D(dstMat.width(), dstMat.height());
+        Sprite sp = Sprite.Create(t2d, new UnityEngine.Rect(0, 0, t2d.width, t2d.height), Vector2.zero);
+        m_imageList[0].sprite = sp;
+        m_imageList[0].preserveAspect = true;
+        Utils.matToTexture2D(dstMat, t2d);
     }
 }
 

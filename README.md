@@ -24,3 +24,6 @@
 ### 注意事项
 1. OpencvForUnity的API中，Mat类型兼容Opencv中的CvMat,IplImage,CvMatND类型。
 2. [官方参考资料](https://forum.unity.com/threads/released-opencv-for-unity.277080/)
+
+### Bug?
+1. Lut(src,lut,dst); //不执行？
