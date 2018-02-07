@@ -12,7 +12,7 @@
 |5|模糊、锐化|√|√|
 |6|反色|√|√|
 |7|色度图|√|√|
-|8|ROI|√|×|
+|8|ROI|√|√|
 |9|膨胀、腐蚀|×|×|
 |10|透视|√|×|
 |11|orb特征提取|√|×|
@@ -23,8 +23,9 @@
 这是一个在unity中使用OpenCV的入门参考，使用商业插件OpencvForUnity。为确保项目正常运行，请购买并导入最新版OpencvForUnity。项目通过一系列独立的例子，由浅入深一步步掌握opencv图片处理的方法。
 
 ### 注意事项
-1. OpencvForUnity的API中，Mat类型兼容Opencv中的CvMat,IplImage,CvMatND类型。
-2. [官方参考资料](https://forum.unity.com/threads/released-opencv-for-unity.277080/)
+1. [官方参考资料](https://forum.unity.com/threads/released-opencv-for-unity.277080/)；
+2. OpencvForUnity的API中，Mat类型兼容Opencv中的CvMat,IplImage,CvMatND类型；
 
 ### Bug?
 1. Lut(src,lut,dst); //不执行？
+2. Rect放在UnityEngine.UI.Image显示; //位置错误；

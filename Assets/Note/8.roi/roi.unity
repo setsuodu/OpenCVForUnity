@@ -124,7 +124,7 @@ GameObject:
   - component: {fileID: 476968293}
   - component: {fileID: 476968292}
   m_Layer: 5
-  m_Name: L RawImage
+  m_Name: Src RawImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -253,7 +253,7 @@ GameObject:
   - component: {fileID: 779718944}
   - component: {fileID: 779718943}
   m_Layer: 5
-  m_Name: R RawImage
+  m_Name: ROI RawImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -496,5 +496,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42f2ed097206b1d43b390ef2cfa41652, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_lRawImage: {fileID: 476968292}
-  m_rRawImage: {fileID: 779718943}
+  m_srcImage: {fileID: 476968292}
+  m_roiImage: {fileID: 779718943}
