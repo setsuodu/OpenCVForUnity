@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using OpenCVForUnity;
 
-public class eroding : MonoBehaviour
+public class erode : MonoBehaviour
 {
     [SerializeField] private Image m_maskImage;
     [SerializeField] private Image m_backgroundImage;
