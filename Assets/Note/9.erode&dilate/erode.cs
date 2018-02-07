@@ -6,29 +6,53 @@ using OpenCVForUnity;
 
 public class erode : MonoBehaviour
 {
-    [SerializeField] private Image m_erodeImage;
-    [SerializeField] private Image m_dilateImage;
+    [SerializeField] private Button m_erodeButton;
+    [SerializeField] private Button m_dilateButton;
     Mat srcMat, dstMat;
+
+    void Awake()
+    {
+        m_erodeButton.onClick.AddListener(OnErode);
+        m_dilateButton.onClick.AddListener(OnDilate);
+    }
 
     void Start()
     {
-        dstMat = Imgcodecs.imread(Application.dataPath + "/Textures/kizuna.jpg", 1); //背景图
-        srcMat = Imgcodecs.imread(Application.dataPath + "/Textures/mask.png", 1); //logo图
-        Imgproc.cvtColor(dstMat, dstMat, Imgproc.COLOR_BGR2RGB); //转RGB
+        srcMat = Imgcodecs.imread(Application.dataPath + "/Textures/sample.jpg", 1); //背景图
         Imgproc.cvtColor(srcMat, srcMat, Imgproc.COLOR_BGR2RGB);
+    }
 
-        int _x = 50;
-        int _y = 50;
-        Mat mask = new Mat(_x, _y, 1); //只有大小
+    /// <summary>
+    /// 腐蚀
+    /// </summary>
+    void OnErode()
+    {
+        dstMat = new Mat();
+        int ksize = 7;
+        Mat kernel = new Mat(ksize, ksize, CvType.CV_32F);
+        Imgproc.erode(srcMat, dstMat, kernel);
 
-        Mat container = new Mat(200, 300, 1); //宽，长
-        srcMat.copyTo(container); //源.copyTo(容器);容器尺寸跟随源
-        Debug.Log(container.width() + "," + container.height());
-
-        Texture2D t2d = new Texture2D(container.width(), container.height());
+        Texture2D t2d = new Texture2D(dstMat.width(), dstMat.height());
         Sprite sp = Sprite.Create(t2d, new UnityEngine.Rect(0, 0, t2d.width, t2d.height), Vector2.zero);
-        m_erodeImage.sprite = sp;
-        m_erodeImage.preserveAspect = true;
-        Utils.matToTexture2D(container, t2d);
+        m_erodeButton.image.sprite = sp;
+        m_erodeButton.image.preserveAspect = true;
+        Utils.matToTexture2D(dstMat, t2d);
+    }
+
+    /// <summary>
+    /// 膨胀
+    /// </summary>
+    void OnDilate()
+    {
+        dstMat = new Mat();
+        int ksize = 7;
+        Mat kernel = new Mat(ksize, ksize, CvType.CV_32F);
+        Imgproc.dilate(srcMat, dstMat, kernel);
+
+        Texture2D t2d = new Texture2D(dstMat.width(), dstMat.height());
+        Sprite sp = Sprite.Create(t2d, new UnityEngine.Rect(0, 0, t2d.width, t2d.height), Vector2.zero);
+        m_dilateButton.image.sprite = sp;
+        m_dilateButton.image.preserveAspect = true;
+        Utils.matToTexture2D(dstMat, t2d);
     }
 }
