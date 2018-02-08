@@ -31,9 +31,9 @@ public class circles : MonoBehaviour
             pt.x = data[0];
             pt.y = data[1];
             double rho = data[2];
-            //绘制圆心  
+            //绘制圆心
             Imgproc.circle(srcMat, pt, 3, new Scalar(255, 255, 0), -1, 8, 0);
-            //绘制圆轮廓  
+            //绘制圆轮廓
             Imgproc.circle(srcMat, pt, (int)rho, new Scalar(255, 0, 0, 255), 5);
         }
 

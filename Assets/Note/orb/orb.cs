@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿/* Can't use SURF/SIFT with this plugin.
+ * Unfortunately, SURF/SIFT does not plan to be implemented.
+ * "DescriptorMatcher.FLANNBASED" seems to only be used in "SIFT, SURF".
+ * But, Because "SIFT,SURT" is nonfree module, it is not implemented in "OpenCV for Untiy".
+ */
+ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,25 +11,22 @@ using OpenCVForUnity;
 
 public class orb : MonoBehaviour
 {
-    [SerializeField] private Texture2D imgTexture1, imgTexture2;
-    [SerializeField] private RawImage outputRawImage;
-    Mat img1Mat, img2Mat;
+    [SerializeField] private Image m_dstImage;
+    Mat p1Mat, p2Mat, dstMat;
 
     void Start()
     {
-        Run();
+        Orb();
     }
 
-    void Run()
+    void Orb()
     {
-        Mat img1Mat = new Mat(imgTexture1.height, imgTexture1.width, CvType.CV_8UC3); //RGB3通道
-        Utils.texture2DToMat(imgTexture1, img1Mat);
-        Debug.Log("img1Mat.ToString() " + img1Mat.ToString());
-
-        Mat img2Mat = new Mat(imgTexture2.height, imgTexture2.width, CvType.CV_8UC3);
-        Utils.texture2DToMat(imgTexture2, img2Mat);
-        Imgproc.resize(img2Mat, img2Mat, new Size(img1Mat.width(), img1Mat.height()));
-        Debug.Log("img2Mat.ToString() " + img2Mat.ToString());
+        p1Mat = Imgcodecs.imread(Application.dataPath + "/Textures/1.jpg", 1);
+        p2Mat = Imgcodecs.imread(Application.dataPath + "/Textures/3.jpg", 1);
+        Imgproc.cvtColor(p1Mat, p1Mat, Imgproc.COLOR_BGR2RGB);
+        Imgproc.cvtColor(p2Mat, p2Mat, Imgproc.COLOR_BGR2RGB);
+        Imgproc.resize(p2Mat, p2Mat, new Size(p1Mat.width(), p1Mat.height()));
+        Debug.Log(p2Mat);
 
         /*
         //仿射变换（矩阵旋转）
@@ -45,14 +47,14 @@ public class orb : MonoBehaviour
         //提取图一特征点
         MatOfKeyPoint keypoints1 = new MatOfKeyPoint();
         Mat descriptors1 = new Mat();
-        detector.detect(img1Mat, keypoints1);
-        extractor.compute(img1Mat, keypoints1, descriptors1);
+        detector.detect(p1Mat, keypoints1);
+        extractor.compute(p1Mat, keypoints1, descriptors1);
 
         //提取图二特征点
         MatOfKeyPoint keypoints2 = new MatOfKeyPoint();
         Mat descriptors2 = new Mat();
-        detector.detect(img2Mat, keypoints2);
-        extractor.compute(img2Mat, keypoints2, descriptors2);
+        detector.detect(p2Mat, keypoints2);
+        extractor.compute(p2Mat, keypoints2, descriptors2);
 
         //第一次匹配结果（密密麻麻）
         DescriptorMatcher matcher = DescriptorMatcher.create(DescriptorMatcher.BRUTEFORCE_HAMMINGLUT);
@@ -75,7 +77,6 @@ public class orb : MonoBehaviour
         for (int i = 0; i < matchesArray.Count; i++)
         {
             Debug.Log("[" + i + "]" + matchesArray[i].distance);
-            ///*
             if (matchesArray[i].distance > max_dist)
             {
                 //max_dist = matchesArray[i].distance;
@@ -84,7 +85,6 @@ public class orb : MonoBehaviour
             {
                 min_dist = matchesArray[i].distance;
             }
-            //*/
         }
         //Debug.Log("The max distance is: " + max_dist);
         Debug.Log("The min distance is: " + min_dist);
@@ -101,13 +101,13 @@ public class orb : MonoBehaviour
         Debug.Log(newMatches.toList().Count); //第二次筛选后符合的
 
         //绘制第二次筛选结果
-        Mat resultImg = new Mat();
-        Features2d.drawMatches(img1Mat, keypoints1, img2Mat, keypoints2, newMatches, resultImg);
+        dstMat = new Mat();
+        Features2d.drawMatches(p1Mat, keypoints1, p2Mat, keypoints2, newMatches, dstMat);
 
-        Texture2D t2d = new Texture2D(resultImg.cols(), resultImg.rows());
-        Utils.matToTexture2D(resultImg, t2d);
-        
-        outputRawImage.texture = t2d;
-        outputRawImage.GetComponent<AspectRatioFitter>().aspectRatio = (float)t2d.width / (float)t2d.height;
+        Texture2D t2d = new Texture2D(dstMat.width(), dstMat.height());
+        Utils.matToTexture2D(dstMat, t2d);
+        Sprite sp = Sprite.Create(t2d, new UnityEngine.Rect(0, 0, t2d.width, t2d.height), Vector2.zero);
+        m_dstImage.sprite = sp;
+        m_dstImage.preserveAspect = true;
     }
 }
