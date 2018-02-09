@@ -642,7 +642,7 @@ PlayerSettings:
       daydreamIconBackground: {fileID: 0}
   cloudServicesEnabled: {}
   facebookSdkVersion: 7.9.4
-  apiCompatibilityLevel: 2
+  apiCompatibilityLevel: 3
   cloudProjectId: 09003a7c-e7d8-49ab-be68-844cd97261d6
   projectName: OpencvForUnity
   organizationId: seol-michael
