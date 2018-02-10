@@ -8,15 +8,18 @@ using UnityEngine.UI;
 public class Compose : MonoBehaviour
 {
     public Texture2D t2d;
-    public RawImage output;
+    public Image m_dstImage;
 
     void Start()
     {
-        t2d = MatMerg();
-        output.texture = t2d;
+        t2d = MatMerge();
+
+        Sprite sp = Sprite.Create(t2d, new UnityEngine.Rect(0,0, t2d.width,t2d.height), Vector2.zero);
+        m_dstImage.sprite = sp;
+        m_dstImage.preserveAspect = true;
     }
 
-    Texture2D MatMerg()
+    Texture2D MatMerge()
     {
         Mat srcMat = Imgcodecs.imread(Application.dataPath + "/Textures/head.png", Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
         Mat dstMat = Imgcodecs.imread(Application.dataPath + "/Textures/background.png", Imgcodecs.CV_LOAD_IMAGE_UNCHANGED); //无法读取图片时，会导致奔溃
@@ -24,7 +27,7 @@ public class Compose : MonoBehaviour
         Imgproc.cvtColor(srcMat, srcMat, Imgproc.COLOR_BGRA2RGBA); //透明
         Imgproc.cvtColor(dstMat, dstMat, Imgproc.COLOR_BGR2RGB);
 
-        Mat bgmat_roi = new Mat(dstMat, new OpenCVForUnity.Rect(797, 269, srcMat.cols(), srcMat.rows())); //不能超出边际，unity会奔溃
+        Mat bgmat_roi = new Mat(dstMat, new OpenCVForUnity.Rect(840, 340, srcMat.cols(), srcMat.rows())); //不能超出边际，unity会奔溃
         cvAdd4cMat_q(bgmat_roi, srcMat, 1.0);
 
         Texture2D texture = new Texture2D(dstMat.cols(), dstMat.rows(), TextureFormat.RGBA32, false);
