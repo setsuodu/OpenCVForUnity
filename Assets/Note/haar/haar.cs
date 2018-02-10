@@ -34,7 +34,6 @@ public class haar : MonoBehaviour
             Imgproc.rectangle(srcMat, new Point(rects[i].x, rects[i].y), new Point(rects[i].x + rects[i].width, rects[i].y + rects[i].height), new Scalar(255, 0, 0, 255), 2);
         }
 
-
         Texture2D t2d = new Texture2D(srcMat.width(), srcMat.height());
         Utils.matToTexture2D(srcMat, t2d);
         Sprite sp = Sprite.Create(t2d, new UnityEngine.Rect(0,0, t2d.width, t2d.height), Vector2.zero);
