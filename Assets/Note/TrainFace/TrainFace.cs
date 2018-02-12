@@ -16,7 +16,7 @@ public class TrainFace : MonoBehaviour
     {
         facerec_0_bmp_filepath = Utils.getFilePath("facerec/facerec_0.bmp");
         facerec_1_bmp_filepath = Utils.getFilePath("facerec/facerec_1.bmp");
-        facerec_sample_bmp_filepath = Utils.getFilePath("facerec/facerec_sample.bmp");
+        facerec_sample_bmp_filepath = Utils.getFilePath("facerec/facerec_2.bmp");
 
         Run();
     }
@@ -35,7 +35,6 @@ public class TrainFace : MonoBehaviour
         labels.fromList(labelsList);
 
         Mat testSampleMat = Imgcodecs.imread(facerec_sample_bmp_filepath, 0);
-        //Mat testSampleMat = Imgcodecs.imread(facerec_0_bmp_filepath, 0);
 
         int testSampleLabel = 0;
         int[] predictedLabel = new int[1];
