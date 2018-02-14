@@ -8,6 +8,7 @@
 /Assets/MORPH3D*
 /Assets/OpenCVForUnity*
 /Assets/StreamingAssets*
+/Assets/RealTimeFaceRecognitionExample*
 
 # Visual Studio 2015 cache directory
 /.vs/
@@ -36,3 +37,5 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+Assets/train_set.txt
+Assets/train_set.txt.meta

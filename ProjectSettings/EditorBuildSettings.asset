@@ -4,4 +4,10 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/RealTimeFaceRecognitionExample/RealTimeFaceRecognitionExample.unity
+  - enabled: 1
+    path: Assets/RealTimeFaceRecognitionExample/ShowLicense.unity
+  - enabled: 1
+    path: Assets/RealTimeFaceRecognitionExample/WebCamTextureRealTimeFaceRecognitionExample/WebCamTextureRealTimeFaceRecognitionExample.unity

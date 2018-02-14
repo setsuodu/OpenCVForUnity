@@ -14,18 +14,20 @@
 |7|色度图|√|√|
 |8|ROI|√|√|
 |9|腐蚀、膨胀|√|√|
-|10|直方图|√|×|
-|n|透视|√|×|
-|n|orb特征提取|√|×|
-|n|轮廓图|×|×|
+|10|直方图|√|√|
+|n|orb特征提取|√|√|
+|n|全景拼接|√|√|
+|n|分类器|√|√|
+|n|检测器|×|×|
+|n|训练器|×|×|
+|n|追踪器|×|×|
 
 ### 使用说明
 这是一个在unity中使用OpenCV的入门参考，使用商业插件OpencvForUnity。为确保项目正常运行，请购买并导入最新版OpencvForUnity。项目通过一系列独立的例子，由浅入深一步步掌握opencv图片处理的方法。
+[官方网站](https://enoxsoftware.com/)；
+[官方论坛](https://forum.unity.com/threads/released-opencv-for-unity.277080/)；
 
-### 注意事项
-1. [官方参考资料](https://forum.unity.com/threads/released-opencv-for-unity.277080/)；
-2. OpencvForUnity的API中，Mat类型兼容Opencv中的CvMat,IplImage,CvMatND类型；
-
-### Bug?
-1. Lut(src,lut,dst); //不执行？
-2. Rect放在UnityEngine.UI.Image显示; //位置错误；
+### 缺陷
+1. Lut(src,lut,dst); //未实现
+2. SURF/SIFT //未实现
+3. Stitcher //未实现
