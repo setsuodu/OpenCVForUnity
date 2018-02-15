@@ -32,7 +32,8 @@ namespace FaceSwapperExample
         string sp_human_face_68_dat_filepath;
 
         Texture2D imgTexture;
-        [SerializeField] private Image dstImage;
+        [SerializeField] private Image srcImage;
+        //[SerializeField] private Image dstImage;
 
         void Start()
         {
@@ -40,7 +41,7 @@ namespace FaceSwapperExample
             sp_human_face_68_dat_filepath = DlibFaceLandmarkDetector.Utils.getFilePath("sp_human_face_68.dat");
             faceLandmarkDetector = new FaceLandmarkDetector(sp_human_face_68_dat_filepath);
 
-            imgTexture = Resources.Load("mc") as Texture2D;
+            imgTexture = Resources.Load("changer") as Texture2D;
 
             Run();
         }
@@ -49,6 +50,8 @@ namespace FaceSwapperExample
         {
             Mat rgbaMat = new Mat(imgTexture.height, imgTexture.width, CvType.CV_8UC4);
             OpenCVForUnity.Utils.texture2DToMat(imgTexture, rgbaMat);
+            //Mat dstMat = Imgcodecs.imread(Application.dataPath + "/Resources/changer.jpg");
+            //Imgproc.cvtColor(dstMat, dstMat, Imgproc.COLOR_BGR2RGB);
 
             FrontalFaceChecker frontalFaceChecker = new FrontalFaceChecker(imgTexture.width, imgTexture.height); //检测正面脸，范围整个t2d
 
@@ -116,7 +119,7 @@ namespace FaceSwapperExample
             */
 
             //检测一张照片的脸的landmark点
-            OpenCVForUnity.Rect openCVRect = detectResult[1];
+            OpenCVForUnity.Rect openCVRect = detectResult[0];
             UnityEngine.Rect rect = new UnityEngine.Rect(openCVRect.x, openCVRect.y, openCVRect.width, openCVRect.height);
             //OpenCVForUnityUtils.DrawFaceRect(rgbaMat, rect, new Scalar(255, 0, 0, 255), 2); //画框rect
             //Imgproc.circle(rgbaMat, new Point(rect.x, rect.y), 0, new Scalar(0, 255, 0, 255), 5, Imgproc.LINE_8, 0);
@@ -129,8 +132,12 @@ namespace FaceSwapperExample
             for (int i = 0; i < points.Count; i++)
             {
                 //Debug.Log("[" + i + "] " + points[i]);
-                log += "new Vector2(" + ((int)points[i].x - 100) + "," + (int)points[i].y + "),\n";
+                log += "new Vector2(" + ((int)points[i].x + 500) + "," + (int)points[i].y + "),\n";
+                //Imgproc.circle(rgbaMat, new Point(10, 10), 0, new Scalar(255, 0, 0, 255), 4, Imgproc.LINE_8, 0); //检查原点
+                //Imgproc.putText(rgbaMat, i.ToString(), new Point(landmarkPoints[0][i].x, landmarkPoints[0][i].y), 1, 1, new Scalar(0, 255, 0, 255));
                 //Imgproc.circle(rgbaMat, new Point(landmarkPoints[0][i].x, landmarkPoints[0][i].y), 0, new Scalar(0, 255, 0, 255), 2, Imgproc.LINE_8, 0); //绘制68点
+                //Imgproc.putText(rgbaMat, rect.x + "x" + rect.y, new Point(rect.x + 5, rect.y - 5), 1, 1, new Scalar(0, 255, 0, 255));
+                //Imgproc.putText(rgbaMat, rect.x + "x" + rect.y, new Point(rect.x + 5, rect.y - 5), 1, 1, new Scalar(0, 255, 0, 255));
                 /* * * * * * * * * * * * *
                  * jaw;       // [0-16]  *
                  * rightBrow; // [17-21] *
@@ -175,8 +182,6 @@ namespace FaceSwapperExample
                     Imgproc.circle(rgbaMat, new Point(points[i].x, points[i].y), 0, new Scalar(255, 180, 255, 255), 2, Imgproc.LINE_8, 0); //粉红
                 }
                 */
-                Imgproc.circle(rgbaMat, new Point(10, 10), 0, new Scalar(255, 0, 0, 255), 4, Imgproc.LINE_8, 0);
-                Imgproc.putText(rgbaMat, rect.x + "x" + rect.y, new Point(rect.x + 5, rect.y - 5), 1, 1, new Scalar(0, 255, 0, 255));
             }
             //Debug.Log(log);
 
@@ -184,76 +189,143 @@ namespace FaceSwapperExample
             //手写一张UV的landmark点
             List<Vector2> uvs = new List<Vector2>()
             {
-                new Vector2(192,109),
-                new Vector2(193,123),
-                new Vector2(196,137),
-                new Vector2(200,152),
-                new Vector2(205,167),
-                new Vector2(211,182),
-                new Vector2(220,195),
-                new Vector2(231,206),
-                new Vector2(246,209),
-                new Vector2(263,206),
-                new Vector2(279,197),
-                new Vector2(293,184),
-                new Vector2(303,169),
-                new Vector2(309,152),
-                new Vector2(311,134),
-                new Vector2(312,117),
-                new Vector2(312,99),
-                new Vector2(192,97),
-                new Vector2(196,89),
-                new Vector2(206,87),
-                new Vector2(216,90),
-                new Vector2(226,94),
-                new Vector2(245,92),
-                new Vector2(256,86),
-                new Vector2(269,84),
-                new Vector2(281,85),
-                new Vector2(290,92),
-                new Vector2(235,103),
-                new Vector2(235,114),
-                new Vector2(235,124),
-                new Vector2(234,134),
-                new Vector2(227,143),
-                new Vector2(232,145),
-                new Vector2(238,146),
-                new Vector2(244,144),
-                new Vector2(251,141),
-                new Vector2(204,107),
-                new Vector2(209,102),
-                new Vector2(217,102),
-                new Vector2(225,107),
-                new Vector2(217,109),
-                new Vector2(209,110),
-                new Vector2(255,106),
-                new Vector2(262,100),
-                new Vector2(270,100),
-                new Vector2(278,104),
-                new Vector2(271,107),
-                new Vector2(263,107),
-                new Vector2(220,164),
-                new Vector2(227,160),
-                new Vector2(235,157),
-                new Vector2(241,158),
-                new Vector2(247,156),
-                new Vector2(259,157),
-                new Vector2(271,159),
-                new Vector2(261,171),
-                new Vector2(250,176),
-                new Vector2(242,178),
-                new Vector2(236,178),
-                new Vector2(228,174),
-                new Vector2(223,165),
-                new Vector2(235,162),
-                new Vector2(241,161),
-                new Vector2(248,160),
-                new Vector2(267,161),
-                new Vector2(249,169),
-                new Vector2(242,171),
-                new Vector2(236,170),
+                //0-7
+                new Vector2(583,210), //0
+                new Vector2(584,250), //1
+                new Vector2(585,305), //2
+                new Vector2(600,360), //3
+                new Vector2(630,410), //4
+                new Vector2(670,425), //5
+                new Vector2(710,440), //6
+                new Vector2(740,445), //7
+                //8
+                new Vector2(770,450), //8+轴
+                //9-16
+                new Vector2(800,445), //9
+                new Vector2(830,440), //10
+                new Vector2(870,425), //11
+                new Vector2(910,410), //12
+                new Vector2(940,360), //13
+                new Vector2(955,305), //14
+                new Vector2(956,250), //15
+                new Vector2(957,210), //16
+                //17-21 leftBrow
+                new Vector2(655,165), //17
+                new Vector2(680,155), //18
+                new Vector2(710,160), //19
+                new Vector2(730,170), //20
+                new Vector2(750,190), //21
+                //22-26 rightBrow
+                new Vector2(790,190), //22
+                new Vector2(810,170), //23
+                new Vector2(830,160), //24
+                new Vector2(860,155), //25
+                new Vector2(885,165), //26
+                //27-30 nose竖
+                new Vector2(770,220), //27
+                new Vector2(770,250), //28
+                new Vector2(770,275), //29
+                new Vector2(770,300), //30
+                //31-35 nose横
+                new Vector2(740,312), //31
+                new Vector2(755,316), //32
+                new Vector2(770,320), //33
+                new Vector2(785,316), //34
+                new Vector2(800,312), //35
+                //36-41 leftEye
+                new Vector2(670,215), //36
+                new Vector2(690,200), //37
+                new Vector2(715,205), //38
+                new Vector2(730,225), //39
+                new Vector2(710,230), //40
+                new Vector2(690,227), //41
+                //42-47 rightEye
+                new Vector2(810,225), //42
+                new Vector2(825,205), //43
+                new Vector2(850,200), //44
+                new Vector2(870,215), //45
+                new Vector2(855,227), //46
+                new Vector2(830,230), //47
+                //48-59 mouth
+                new Vector2(720,360), //48-l
+                new Vector2(735,355), //49
+                new Vector2(750,350), //50
+                new Vector2(770,352), //51+u
+                new Vector2(790,350), //52
+                new Vector2(805,355), //53
+                new Vector2(820,360), //54-r
+                new Vector2(805,375), //55
+                new Vector2(790,382), //56
+                new Vector2(770,380), //57+d
+                new Vector2(750,382), //58
+                new Vector2(735,375), //59
+                //60-67 mouth2
+                new Vector2(730,365), //60-l
+                new Vector2(750,357), //61
+                new Vector2(770,354), //62+u
+                new Vector2(790,357), //63
+                new Vector2(810,365), //64-r
+                new Vector2(790,370), //65
+                new Vector2(770,375), //66+d
+                new Vector2(750,370), //67
             };
             landmarkPoints.Add(uvs);
+
+
+            for (int i = 0; i < landmarkPoints[1].Count; i++)
+            {
+                Imgproc.putText(rgbaMat, i.ToString(), new Point(landmarkPoints[1][i].x, landmarkPoints[1][i].y), 1, 1, new Scalar(255, 0, 0, 255));
+                /* * * * * * * * * * * * *
+                 * jaw;       // [0-16]  *
+                 * rightBrow; // [17-21] *
+                 * leftBrow;  // [22-26] *
+                 * nose;      // [27-35] *
+                 * rightEye;  // [36-41] *
+                 * leftEye;   // [42-47] *
+                 * mouth;     // [48-59] *
+                 * mouth2;    // [60-67] *
+                 * * * * * * * * * * * * */
+
+                /*
+                if (i >= 0 && i <= 16)
+                {
+                    Imgproc.circle(rgbaMat, new Point(landmarkPoints[1][i].x, landmarkPoints[1][i].y), 0, new Scalar(255, 0, 0, 255), 5, Imgproc.LINE_8, 0); //红
+                }
+                else if (i >= 17 && i <= 21)
+                {
+                    Imgproc.circle(rgbaMat, new Point(landmarkPoints[1][i].x, landmarkPoints[1][i].y), 0, new Scalar(255, 0, 0, 255), 5, Imgproc.LINE_8, 0); //橙
+                }
+                else if (i >= 22 && i <= 26)
+                {
+                    Imgproc.circle(rgbaMat, new Point(landmarkPoints[1][i].x, landmarkPoints[1][i].y), 0, new Scalar(255, 0, 0, 255), 5, Imgproc.LINE_8, 0); //黄
+                }
+                else if (i >= 27 && i <= 35)
+                {
+                    Imgproc.circle(rgbaMat, new Point(landmarkPoints[1][i].x, landmarkPoints[1][i].y), 0, new Scalar(255, 0, 0, 255), 5, Imgproc.LINE_8, 0); //绿
+                }
+                else if (i >= 36 && i <= 21)
+                {
+                    Imgproc.circle(rgbaMat, new Point(landmarkPoints[1][i].x, landmarkPoints[1][i].y), 0, new Scalar(255, 0, 0, 255), 5, Imgproc.LINE_8, 0); //青
+                }
+                else if (i >= 42 && i <= 47)
+                {
+                    Imgproc.circle(rgbaMat, new Point(landmarkPoints[1][i].x, landmarkPoints[1][i].y), 0, new Scalar(255, 0, 0, 255), 5, Imgproc.LINE_8, 0); //蓝
+                }
+                else if (i >= 48 && i <= 59)
+                {
+                    Imgproc.circle(rgbaMat, new Point(landmarkPoints[1][i].x, landmarkPoints[1][i].y), 0, new Scalar(255, 0, 0, 255), 5, Imgproc.LINE_8, 0); //紫
+                }
+                else if (i >= 60 && i <= 67)
+                {
+                    //Imgproc.circle(rgbaMat, new Point(landmarkPoints[1][i].x, landmarkPoints[1][i].y), 0, new Scalar(255, 0, 0, 255), 5, Imgproc.LINE_8, 0); //粉红
+                }
+                */
+            }
+
+
+
+
+
 
             //过滤非正面的脸
             if (filterNonFrontalFaces)
@@ -275,20 +347,20 @@ namespace FaceSwapperExample
                 //开始换脸
                 DlibFaceChanger faceChanger = new DlibFaceChanger();
                 faceChanger.isShowingDebugFacePoints = displayDebugFacePoints;
-                faceChanger.SetTargetImage(rgbaMat);
-                //从0拷贝到1
-                //faceChanger.AddFaceChangeData(rgbaMat, landmarkPoints[0], landmarkPoints[1], 1); //src-> dst
+                faceChanger.SetTargetImage(rgbaMat); //目标Mat
+                faceChanger.AddFaceChangeData(rgbaMat, landmarkPoints[0], landmarkPoints[1], 1); //源Mat，从0拷贝到1
                 faceChanger.ChangeFace();
                 faceChanger.Dispose();
             }
 
             frontalFaceChecker.Dispose();
 
-            Texture2D t2d = new Texture2D(rgbaMat.cols(), rgbaMat.rows(), TextureFormat.RGBA32, false);
+            //背景图
+            Texture2D t2d = new Texture2D(rgbaMat.width(), rgbaMat.height(), TextureFormat.RGBA32, false);
             OpenCVForUnity.Utils.matToTexture2D(rgbaMat, t2d);
             Sprite sp = Sprite.Create(t2d, new UnityEngine.Rect(0, 0, t2d.width, t2d.height), Vector2.zero);
-            dstImage.sprite = sp;
-            dstImage.preserveAspect = true;
+            srcImage.sprite = sp;
+            srcImage.preserveAspect = true;
 
             rgbaMat.Dispose();
         }
