@@ -61,8 +61,9 @@ public class FaceDetect : MonoBehaviour
 
     void Run()
     {
+        //人脸68关键点定位
         sp_human_face_68_dat_filepath = DlibFaceLandmarkDetector.Utils.getFilePath("sp_human_face_68.dat");
-        FaceLandmarkDetector faceLandmarkDetector = new FaceLandmarkDetector(sp_human_face_68_dat_filepath);
+        FaceLandmarkDetector faceLandmarkDetector = new FaceLandmarkDetector(sp_human_face_68_dat_filepath); 
 
         Mat imgMat = Imgcodecs.imread(Application.dataPath + "/Textures/face.jpg");
         Imgproc.cvtColor(imgMat, imgMat, Imgproc.COLOR_BGR2RGB);
@@ -86,10 +87,10 @@ public class FaceDetect : MonoBehaviour
 
             Debug.Log("face points count : " + points.Count);
             //draw landmark points
-            OpenCVForUnityUtils.DrawFaceLandmark(imgMat, points, new Scalar(0, 255, 0, 255), 2);
+            OpenCVForUnityUtils.DrawFaceLandmark(imgMat, points, new Scalar(0, 255, 0, 255), 1); //线，不是点
 
             //draw face rect
-            OpenCVForUnityUtils.DrawFaceRect(imgMat, result.rect, new Scalar(255, 0, 0, 255), 2);
+            OpenCVForUnityUtils.DrawFaceRect(imgMat, result.rect, new Scalar(255, 0, 0, 255), 1);
         }
         faceLandmarkDetector.Dispose();
 

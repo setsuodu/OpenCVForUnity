@@ -4,7 +4,7 @@
 PlayerSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 14
-  productGUID: 462ae970bb3d780408563b77df183f8b
+  productGUID: 63023d10aed70c641aa26f2cf9cef6c6
   AndroidProfiler: 0
   AndroidFilterTouchesWhenObscured: 0
   defaultScreenOrientation: 4
@@ -268,7 +268,7 @@ PlayerSettings:
       m_Icon: {fileID: 0}
       m_Width: 128
       m_Height: 128
-      m_Kind: 42258
+      m_Kind: 42531
   - m_BuildTarget: Android
     m_Icons:
     - serializedVersion: 2
@@ -689,7 +689,7 @@ PlayerSettings:
   facebookSdkVersion: 7.9.4
   apiCompatibilityLevel: 2
   cloudProjectId: 09003a7c-e7d8-49ab-be68-844cd97261d6
-  projectName: OpencvForUnity
+  projectName: 
   organizationId: seol-michael
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
