@@ -9,6 +9,7 @@
 /Assets/OpenCVForUnity*
 /Assets/StreamingAssets*
 /Assets/RealTimeFaceRecognitionExample*
+/Assets/FaceSwapperExample*
 
 # Visual Studio 2015 cache directory
 /.vs/

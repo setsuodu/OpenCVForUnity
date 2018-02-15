@@ -4,7 +4,7 @@
 PlayerSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 14
-  productGUID: 7c5316eb1d33f6f46aceb990fef60c5d
+  productGUID: 462ae970bb3d780408563b77df183f8b
   AndroidProfiler: 0
   AndroidFilterTouchesWhenObscured: 0
   defaultScreenOrientation: 4
@@ -126,7 +126,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: 1.0.3
+  bundleVersion: 1.0.6
   preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
@@ -158,14 +158,14 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
-    Android: com.enoxsofrware.realtimefacerecognitionexample
-    Standalone: unity.EnoxSoftware.RealTimeFaceRecognitionExample
-    Tizen: com.enoxsofrware.realtimefacerecognitionexample
-    iOS: com.enoxsofrware.realtimefacerecognitionexample
-    tvOS: com.enoxsofrware.realtimefacerecognitionexample
+    Android: com.enoxsoftware.faceswapperexample
+    Standalone: unity.Enox Software.FaceSwapperExample
+    Tizen: com.enoxsoftware.faceswapperexample
+    iOS: com.enoxsoftware.faceswapperexample
+    tvOS: com.enoxsoftware.faceswapperexample
   buildNumber:
     iOS: 0
-  AndroidBundleVersionCode: 4
+  AndroidBundleVersionCode: 9
   AndroidMinSdkVersion: 16
   AndroidTargetSdkVersion: 0
   AndroidPreferredInstallLocation: 1
@@ -178,7 +178,7 @@ PlayerSettings:
   CreateWallpaper: 0
   APKExpansionFiles: 0
   keepLoadedShadersAlive: 0
-  StripUnusedMeshComponents: 0
+  StripUnusedMeshComponents: 1
   VertexChannelCompressionMask:
     serializedVersion: 2
     m_Bits: 238
@@ -244,7 +244,7 @@ PlayerSettings:
   iOSManualSigningProvisioningProfileID: 
   tvOSManualSigningProvisioningProfileID: 
   appleEnableAutomaticSigning: 0
-  clonedFromGUID: b0efa2d7f4da1564fbe507a409d961c7
+  clonedFromGUID: 76e5e5c48f81c3248b4feb813534a91b
   AndroidTargetDevice: 0
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
@@ -268,36 +268,36 @@ PlayerSettings:
       m_Icon: {fileID: 0}
       m_Width: 128
       m_Height: 128
-      m_Kind: 42153
+      m_Kind: 42258
   - m_BuildTarget: Android
     m_Icons:
     - serializedVersion: 2
-      m_Icon: {fileID: 2800000, guid: dbc22735034a38144919cf37538f0bdb, type: 3}
+      m_Icon: {fileID: 2800000, guid: 3f1d64a4a3667c64395d7fb0366fbfce, type: 3}
       m_Width: 192
       m_Height: 192
       m_Kind: 0
     - serializedVersion: 2
-      m_Icon: {fileID: 2800000, guid: f5dfe965eb918f7458c374b49d68df84, type: 3}
+      m_Icon: {fileID: 2800000, guid: a58d10301c9016d4e815aa546c5ddfcf, type: 3}
       m_Width: 144
       m_Height: 144
       m_Kind: 0
     - serializedVersion: 2
-      m_Icon: {fileID: 2800000, guid: 640b69f4a1777b64db15c460e743723c, type: 3}
+      m_Icon: {fileID: 2800000, guid: 7eefcb76cab79274e8b7ce4a0ff2588c, type: 3}
       m_Width: 96
       m_Height: 96
       m_Kind: 0
     - serializedVersion: 2
-      m_Icon: {fileID: 2800000, guid: 2e660b74567a3b646816af8d95bc85ad, type: 3}
+      m_Icon: {fileID: 2800000, guid: c818d11f779303542bb036dd00d2d1c1, type: 3}
       m_Width: 72
       m_Height: 72
       m_Kind: 0
     - serializedVersion: 2
-      m_Icon: {fileID: 2800000, guid: 28950bfc3f08ac6458f759b0f7a6a44e, type: 3}
+      m_Icon: {fileID: 2800000, guid: c065ebf9e9358d94eb48d4008795bce6, type: 3}
       m_Width: 48
       m_Height: 48
       m_Kind: 0
     - serializedVersion: 2
-      m_Icon: {fileID: 2800000, guid: 9af995aa896a85d45b681f7a7edf5e34, type: 3}
+      m_Icon: {fileID: 2800000, guid: f538e1835e8faf94eb26f74047e2801d, type: 3}
       m_Width: 36
       m_Height: 36
       m_Kind: 0
@@ -593,7 +593,7 @@ PlayerSettings:
   webGLDebugSymbols: 0
   webGLEmscriptenArgs: 
   webGLModulesDirectory: 
-  webGLTemplate: APPLICATION:Default
+  webGLTemplate: APPLICATION:FileUploader
   webGLAnalyzeBuildSize: 0
   webGLUseEmbeddedResources: 0
   webGLUseWasm: 0
@@ -614,14 +614,14 @@ PlayerSettings:
   apiCompatibilityLevelPerPlatform: {}
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: Test
+  metroPackageName: YamlTest
   metroPackageVersion: 
   metroCertificatePath: 
   metroCertificatePassword: 
   metroCertificateSubject: 
   metroCertificateIssuer: 
   metroCertificateNotAfter: 0000000000000000
-  metroApplicationDescription: Test
+  metroApplicationDescription: YamlTest
   wsaImages: {}
   metroTileShortName: 
   metroCommandLineArgsFile: 

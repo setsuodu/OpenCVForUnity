@@ -20,5 +20,5 @@ Physics2DSettings:
   m_AngularSleepTolerance: 2
   m_RaycastsHitTriggers: 1
   m_RaycastsStartInColliders: 1
-  m_ChangeStopsCallbacks: 0
+  m_ChangeStopsCallbacks: 1
   m_LayerCollisionMatrix: ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff

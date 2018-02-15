@@ -5,9 +5,19 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
+  - enabled: 0
+    path: Assets/OBB/OBBLoader.unity
   - enabled: 1
-    path: Assets/RealTimeFaceRecognitionExample/RealTimeFaceRecognitionExample.unity
+    path: Assets/FaceSwapperExample/FaceSwapperExample.unity
   - enabled: 1
-    path: Assets/RealTimeFaceRecognitionExample/ShowLicense.unity
+    path: Assets/FaceSwapperExample/ShowLicense.unity
   - enabled: 1
-    path: Assets/RealTimeFaceRecognitionExample/WebCamTextureRealTimeFaceRecognitionExample/WebCamTextureRealTimeFaceRecognitionExample.unity
+    path: Assets/FaceSwapperExample/Texture2DFaceSwapperExample/Texture2DFaceSwapperExample.unity
+  - enabled: 1
+    path: Assets/FaceSwapperExample/WebCamTextureFaceSwapperExample/WebCamTextureFaceSwapperExample.unity
+  - enabled: 1
+    path: Assets/FaceSwapperExample/VideoCaptureFaceSwapperExample/VideoCaptureFaceSwapperExample.unity
+  - enabled: 1
+    path: Assets/FaceSwapperExample/Texture2DFaceChangerExample/Texture2DFaceChangerExample.unity
+  - enabled: 1
+    path: Assets/FaceSwapperExample/WebCamTextureFaceChangerExample/WebCamTextureFaceChangerExample.unity
