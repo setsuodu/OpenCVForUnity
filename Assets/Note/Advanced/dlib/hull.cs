@@ -18,7 +18,7 @@ namespace FaceSwapperExample
 
         [SerializeField] private Image srcImage;
         [SerializeField] private Image dstImage;
-        Mat rgbaMat;
+        Mat rgbaMat, dstMat;
         List<Point> pointList;
 
         void Start()
@@ -27,13 +27,15 @@ namespace FaceSwapperExample
             sp_human_face_68_dat_filepath = DlibFaceLandmarkDetector.Utils.getFilePath("sp_human_face_68.dat");
             faceLandmarkDetector = new FaceLandmarkDetector(sp_human_face_68_dat_filepath);
 
-            CvHull();
+            Run();
         }
 
-        void CvHull()
+        void Run()
         {
             rgbaMat = Imgcodecs.imread(Application.dataPath + "/Resources/aragaki.jpg", 1);
             Imgproc.cvtColor(rgbaMat, rgbaMat, Imgproc.COLOR_BGR2RGBA);
+            dstMat = Imgcodecs.imread(Application.dataPath + "/Resources/lena.jpg", 1);
+            Imgproc.cvtColor(dstMat, dstMat, Imgproc.COLOR_BGR2RGBA);
 
             //1. 人脸dlib检测
             List<OpenCVForUnity.Rect> detectResult = new List<OpenCVForUnity.Rect>();
@@ -49,7 +51,6 @@ namespace FaceSwapperExample
             UnityEngine.Rect rect = new UnityEngine.Rect(openCVRect.x, openCVRect.y, openCVRect.width, openCVRect.height);
             List<Vector2> points = faceLandmarkDetector.DetectLandmark(rect); //通过检测器从rect中提取point
             landmarkPoints.Add(points);
-
 
             //2. 计算凸包
             pointList = new List<Point>();
@@ -67,7 +68,7 @@ namespace FaceSwapperExample
             TriangleDivide();
 
             //4. （遍历三角形）仿射变换
-
+            Affine();
 
             //5. 显示
             MatOfPoint pointsMat = new MatOfPoint();
@@ -92,6 +93,12 @@ namespace FaceSwapperExample
             Sprite sp = Sprite.Create(t2d, new UnityEngine.Rect(0, 0, t2d.width, t2d.height), Vector2.zero);
             srcImage.sprite = sp;
             srcImage.preserveAspect = true;
+
+            Texture2D dst_t2d = new Texture2D(dstMat.cols(), dstMat.rows(), TextureFormat.RGBA32, false);
+            OpenCVForUnity.Utils.matToTexture2D(dstMat, dst_t2d);
+            Sprite dst_sp = Sprite.Create(dst_t2d, new UnityEngine.Rect(0, 0, dst_t2d.width, dst_t2d.height), Vector2.zero);
+            dstImage.sprite = dst_sp;
+            dstImage.preserveAspect = true;
         }
 
         void TriangleDivide()
@@ -155,6 +162,11 @@ namespace FaceSwapperExample
                     Imgproc.line(rgbaMat, p2, p0, new Scalar(64, 255, 128, 255));
                 }
             }
+        }
+
+        void Affine()
+        {
+
         }
     }
 }
