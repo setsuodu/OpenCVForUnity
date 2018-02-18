@@ -34,6 +34,7 @@ namespace FaceSwapperExample
         Texture2D imgTexture;
         [SerializeField] private Image srcImage;
         //[SerializeField] private Image dstImage;
+        [SerializeField] private SkinnedMeshRenderer mesh;
 
         void Start()
         {
@@ -274,7 +275,7 @@ namespace FaceSwapperExample
 
             for (int i = 0; i < landmarkPoints[1].Count; i++)
             {
-                Imgproc.putText(rgbaMat, i.ToString(), new Point(landmarkPoints[1][i].x, landmarkPoints[1][i].y), 1, 1, new Scalar(255, 0, 0, 255));
+                //Imgproc.putText(rgbaMat, i.ToString(), new Point(landmarkPoints[1][i].x, landmarkPoints[1][i].y), 1, 1, new Scalar(255, 0, 0, 255));
                 /* * * * * * * * * * * * *
                  * jaw;       // [0-16]  *
                  * rightBrow; // [17-21] *
@@ -348,7 +349,7 @@ namespace FaceSwapperExample
                 DlibFaceChanger faceChanger = new DlibFaceChanger();
                 faceChanger.isShowingDebugFacePoints = displayDebugFacePoints;
                 faceChanger.SetTargetImage(rgbaMat); //目标Mat
-                faceChanger.AddFaceChangeData(rgbaMat, landmarkPoints[0], landmarkPoints[1], 1); //源Mat，从0拷贝到1
+                faceChanger.AddFaceChangeData(rgbaMat, landmarkPoints[0], landmarkPoints[1], 0.9f); //源Mat，从0拷贝到1
                 faceChanger.ChangeFace();
                 faceChanger.Dispose();
             }
@@ -361,6 +362,12 @@ namespace FaceSwapperExample
             Sprite sp = Sprite.Create(t2d, new UnityEngine.Rect(0, 0, t2d.width, t2d.height), Vector2.zero);
             srcImage.sprite = sp;
             srcImage.preserveAspect = true;
+
+
+            Mat dstMat = new Mat(rgbaMat, new OpenCVForUnity.Rect(rgbaMat.width() / 2, 0, rgbaMat.width() / 2, rgbaMat.height()));
+            Texture2D dst_t2d = new Texture2D(dstMat.width(), dstMat.height(), TextureFormat.RGBA32, false);
+            OpenCVForUnity.Utils.matToTexture2D(dstMat, dst_t2d);
+            mesh.materials[1].mainTexture = dst_t2d;
 
             rgbaMat.Dispose();
         }
