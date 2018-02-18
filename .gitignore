@@ -40,3 +40,5 @@ sysinfo.txt
 *.unitypackage
 Assets/train_set.txt
 Assets/train_set.txt.meta
+*.psd
+*.meta
