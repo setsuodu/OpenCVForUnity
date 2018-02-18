@@ -34,11 +34,7 @@ namespace FaceSwapperExample
         Texture2D imgTexture;
         [SerializeField] private Image srcImage;
         //[SerializeField] private Image dstImage;
-        Mat imgMat, gray1Mat, downScaleRgbaMat;
-        int EDGE_DETECT_VALUE = 70;
-        double POINT_RATE = 0.075;
-        int POINT_MAX_NUM = 2500;
-        Subdiv2D subdiv;
+        Mat rgbaMat;
         List<Point> pointList;
 
         void Start()
@@ -55,18 +51,18 @@ namespace FaceSwapperExample
 
         void CvHull()
         {
-            //Mat imgMat = new Mat(500, 500, CvType.CV_8UC3, new Scalar(0, 0, 0));
-            imgMat = Imgcodecs.imread(Application.dataPath + "/Resources/aragaki.jpg");
+            rgbaMat = Imgcodecs.imread(Application.dataPath + "/Resources/aragaki.jpg", 1);
+            Imgproc.cvtColor(rgbaMat, rgbaMat, Imgproc.COLOR_BGR2RGBA);
 
             //1. 人脸dlib检测
             List<OpenCVForUnity.Rect> detectResult = new List<OpenCVForUnity.Rect>();
-            OpenCVForUnityUtils.SetImage(faceLandmarkDetector, imgMat);
+            OpenCVForUnityUtils.SetImage(faceLandmarkDetector, rgbaMat);
             List<UnityEngine.Rect> result = faceLandmarkDetector.Detect();
             foreach (UnityEngine.Rect unityRect in result)
             {
                 detectResult.Add(new OpenCVForUnity.Rect((int)unityRect.x, (int)unityRect.y, (int)unityRect.width, (int)unityRect.height));
             }
-            OpenCVForUnityUtils.SetImage(faceLandmarkDetector, imgMat);
+            OpenCVForUnityUtils.SetImage(faceLandmarkDetector, rgbaMat);
             List<List<Vector2>> landmarkPoints = new List<List<Vector2>>();
             OpenCVForUnity.Rect openCVRect = detectResult[0];
             UnityEngine.Rect rect = new UnityEngine.Rect(openCVRect.x, openCVRect.y, openCVRect.width, openCVRect.height);
@@ -79,44 +75,37 @@ namespace FaceSwapperExample
             for (int i = 0; i < points.Count; i++)
             {
                 //绘制点
-                //Imgproc.circle(imgMat, new Point(points[i].x, points[i].y), 2, new Scalar(255, 255, 255), -1);
+                //Imgproc.circle(rgbaMat, new Point(points[i].x, points[i].y), 2, new Scalar(255, 255, 255), -1);
                 Point pt = new Point(landmarkPoints[0][i].x, landmarkPoints[0][i].y);
-                Imgproc.circle(imgMat, pt, 0, new Scalar(0, 255, 0, 255), 2, Imgproc.LINE_8, 0); //绘制68点
+                Imgproc.circle(rgbaMat, pt, 0, new Scalar(0, 255, 0, 255), 2, Imgproc.LINE_8, 0); //绘制68点
                 pointList.Add(pt);
             }
             //Debug.Log(pointList.Count);
-
-            MatOfPoint pointsMat = new MatOfPoint();
-            pointsMat.fromList(pointList);
-
-            MatOfInt hullInt = new MatOfInt();
-            Imgproc.convexHull(pointsMat, hullInt);
-
-            List<Point> pointMatList = pointsMat.toList();
-            List<int> hullIntList = hullInt.toList();
-            List<Point> hullPointList = new List<Point>();
-
-            for (int j = 0; j < hullInt.toList().Count; j++)
-            {
-                hullPointList.Add(pointMatList[hullIntList[j]]);
-            }
-
-            MatOfPoint hullPointMat = new MatOfPoint();
-            hullPointMat.fromList(hullPointList);
-
-            List<MatOfPoint> hullPoints = new List<MatOfPoint>();
-            hullPoints.Add(hullPointMat);
-
-            Imgproc.drawContours(imgMat, hullPoints, -1, new Scalar(0, 255, 0), 2);
-            Imgproc.cvtColor(imgMat, imgMat, Imgproc.COLOR_BGR2RGB);
 
             //3. 三角剖份
             Triangle();
 
 
             //4. 显示
-            Texture2D t2d = new Texture2D(imgMat.cols(), imgMat.rows(), TextureFormat.RGBA32, false);
-            OpenCVForUnity.Utils.matToTexture2D(imgMat, t2d);
+            MatOfPoint pointsMat = new MatOfPoint();
+            pointsMat.fromList(pointList);
+            MatOfInt hullInt = new MatOfInt();
+            Imgproc.convexHull(pointsMat, hullInt);
+            List<Point> pointMatList = pointsMat.toList();
+            List<int> hullIntList = hullInt.toList();
+            List<Point> hullPointList = new List<Point>();
+            for (int j = 0; j < hullInt.toList().Count; j++)
+            {
+                hullPointList.Add(pointMatList[hullIntList[j]]);
+            }
+            MatOfPoint hullPointMat = new MatOfPoint();
+            hullPointMat.fromList(hullPointList);
+            List<MatOfPoint> hullPoints = new List<MatOfPoint>();
+            hullPoints.Add(hullPointMat);
+            Imgproc.drawContours(rgbaMat, hullPoints, -1, new Scalar(255, 255, 0, 255), 2);
+
+            Texture2D t2d = new Texture2D(rgbaMat.cols(), rgbaMat.rows(), TextureFormat.RGBA32, false);
+            OpenCVForUnity.Utils.matToTexture2D(rgbaMat, t2d);
             Sprite sp = Sprite.Create(t2d, new UnityEngine.Rect(0, 0, t2d.width, t2d.height), Vector2.zero);
             srcImage.sprite = sp;
             srcImage.preserveAspect = true;
@@ -124,55 +113,47 @@ namespace FaceSwapperExample
 
         void Triangle()
         {
-            gray1Mat = new Mat();
-            downScaleRgbaMat = imgMat.clone();
-            Imgproc.cvtColor(imgMat, gray1Mat, Imgproc.COLOR_RGBA2GRAY);
-
             //init subdiv
-            subdiv = new Subdiv2D();
-            subdiv.initDelaunay(new OpenCVForUnity.Rect(0, 0, downScaleRgbaMat.width(), downScaleRgbaMat.height()));
+            Subdiv2D subdiv = new Subdiv2D();
+            subdiv.initDelaunay(new OpenCVForUnity.Rect(0, 0, rgbaMat.width(), rgbaMat.height()));
             for (int i = 0; i < pointList.Count; i++)
             {
                 subdiv.insert(pointList[i]);
             }
-            Debug.Log(pointList.Count); //68
-
-            //框上添加8个点
             subdiv.insert(new Point(0, 0));
-            subdiv.insert(new Point(gray1Mat.width() / 2 - 1, 0));
-            subdiv.insert(new Point(gray1Mat.width() - 1, 0));
-            subdiv.insert(new Point(gray1Mat.width() - 1, gray1Mat.height() / 2 - 1));
-            subdiv.insert(new Point(gray1Mat.width() - 1, gray1Mat.height() - 1));
-            subdiv.insert(new Point(gray1Mat.width() / 2 - 1, gray1Mat.height() - 1));
-            subdiv.insert(new Point(0, gray1Mat.height() - 1));
-            subdiv.insert(new Point(0, gray1Mat.height() / 2 - 1));
+            subdiv.insert(new Point(rgbaMat.width() / 2 - 1, 0));
+            subdiv.insert(new Point(rgbaMat.width() - 1, 0));
+            subdiv.insert(new Point(rgbaMat.width() - 1, rgbaMat.height() / 2 - 1));
+            subdiv.insert(new Point(rgbaMat.width() - 1, rgbaMat.height() - 1));
+            subdiv.insert(new Point(rgbaMat.width() / 2 - 1, rgbaMat.height() - 1));
+            subdiv.insert(new Point(0, rgbaMat.height() - 1));
+            subdiv.insert(new Point(0, rgbaMat.height() / 2 - 1));
 
             using (MatOfFloat6 triangleList = new MatOfFloat6())
             {
                 subdiv.getTriangleList(triangleList);
-                //Debug.Log(triangleList.size().area()); //154
-
                 float[] pointArray = triangleList.toArray();
-                //Debug.Log(pointArray.Length); //154*6
+                //Debug.Log(pointArray.Length); //11000+
+                float downScaleRatio = 1;
 
                 byte[] color = new byte[4];
                 for (int i = 0; i < pointArray.Length / 6; i++)
                 {
-                    Point p0 = new Point(pointArray[i * 6 + 0], pointArray[i * 6 + 1]);
-                    Point p1 = new Point(pointArray[i * 6 + 2], pointArray[i * 6 + 3]);
-                    Point p2 = new Point(pointArray[i * 6 + 4], pointArray[i * 6 + 5]);
+                    Point p0 = new Point(pointArray[i * 6 + 0] * downScaleRatio, pointArray[i * 6 + 1] * downScaleRatio);
+                    Point p1 = new Point(pointArray[i * 6 + 2] * downScaleRatio, pointArray[i * 6 + 3] * downScaleRatio);
+                    Point p2 = new Point(pointArray[i * 6 + 4] * downScaleRatio, pointArray[i * 6 + 5] * downScaleRatio);
 
-                    if (p0.x < 0 || p0.x > imgMat.width())
+                    if (p0.x < 0 || p0.x > rgbaMat.width())
                         continue;
-                    if (p0.y < 0 || p0.y > imgMat.height())
+                    if (p0.y < 0 || p0.y > rgbaMat.height())
                         continue;
-                    if (p1.x < 0 || p1.x > imgMat.width())
+                    if (p1.x < 0 || p1.x > rgbaMat.width())
                         continue;
-                    if (p1.y < 0 || p1.y > imgMat.height())
+                    if (p1.y < 0 || p1.y > rgbaMat.height())
                         continue;
-                    if (p2.x < 0 || p2.x > imgMat.width())
+                    if (p2.x < 0 || p2.x > rgbaMat.width())
                         continue;
-                    if (p2.y < 0 || p2.y > imgMat.height())
+                    if (p2.y < 0 || p2.y > rgbaMat.height())
                         continue;
 
                     //get center of gravity
@@ -181,21 +162,21 @@ namespace FaceSwapperExample
                     //Debug.Log ("cx " + cx + " cy " + cy );
 
                     //get center of gravity color
-                    imgMat.get(cy, cx, color);
+                    rgbaMat.get(cy, cx, color);
                     //Debug.Log ("r " + color[0] + " g " + color[1] + " b " + color[2] + " a " + color[3]);
 
                     //fill Polygon
                     //Imgproc.fillConvexPoly(rgbaMat, new MatOfPoint(p0, p1, p2), new Scalar(color[0], color[1], color[2], color[3]), Imgproc.LINE_AA, 0);
-                    Imgproc.line(imgMat, p0, p1, new Scalar(64, 255, 128, 255));
-                    Imgproc.line(imgMat, p1, p2, new Scalar(64, 255, 128, 255));
-                    Imgproc.line(imgMat, p2, p0, new Scalar(64, 255, 128, 255));
+                    Imgproc.line(rgbaMat, p0, p1, new Scalar(64, 255, 128, 255));
+                    Imgproc.line(rgbaMat, p1, p2, new Scalar(64, 255, 128, 255));
+                    Imgproc.line(rgbaMat, p2, p0, new Scalar(64, 255, 128, 255));
                 }
             }
         }
 
         void Run()
         {
-            Mat rgbaMat = new Mat(imgTexture.height, imgTexture.width, CvType.CV_8UC4);
+            rgbaMat = new Mat(imgTexture.height, imgTexture.width, CvType.CV_8UC4);
             OpenCVForUnity.Utils.texture2DToMat(imgTexture, rgbaMat);
             //Mat dstMat = Imgcodecs.imread(Application.dataPath + "/Resources/changer.jpg");
             //Imgproc.cvtColor(dstMat, dstMat, Imgproc.COLOR_BGR2RGB);
