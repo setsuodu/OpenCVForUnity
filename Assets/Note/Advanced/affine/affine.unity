@@ -124,7 +124,7 @@ GameObject:
   - component: {fileID: 159053766}
   - component: {fileID: 159053765}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Dst Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -273,7 +273,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d74dd7d61e6eae5448e9ab32f4bacfbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  image: {fileID: 159053765}
+  dstImage: {fileID: 159053765}
 --- !u!114 &549525946
 MonoBehaviour:
   m_ObjectHideFlags: 0
