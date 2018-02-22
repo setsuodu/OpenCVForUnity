@@ -16,7 +16,7 @@ public class affineTest : MonoBehaviour
 
         dstMat = srcMat.clone();
 
-        ///* 变换一
+        /* 仿射变换
         Point srcPoint0 = new Point(0, 0);
         Point srcPoint1 = new Point(srcMat.width() - 1, 0);
         Point srcPoint2 = new Point(0, srcMat.height() - 1);
@@ -25,24 +25,21 @@ public class affineTest : MonoBehaviour
         Point dstPoint1 = new Point(srcMat.width() * 0.85d, srcMat.height() * 0.25d);
         Point dstPoint2 = new Point(srcMat.width() * 0.15d, srcMat.height() * 0.7d);
         MatOfPoint2f dstTri = new MatOfPoint2f(new Point[3] { dstPoint0, dstPoint1, dstPoint2 });
-        //warpMat = new Mat(2, 3, CvType.CV_32FC1);
         warpMat = Imgproc.getAffineTransform(srcTri, dstTri);
         Imgproc.warpAffine(srcMat, dstMat, warpMat, new Size(dstMat.width(), dstMat.height()));
-        //*/
+        */
 
-        ///* 旋转
+        /* 旋转变换
         //拷贝整个画布
         dstMat.copyTo(srcMat);
         Point center = new Point(srcMat.width() / 2, srcMat.height() / 2);
         double angle = -50.0d;
         double scale = -0.6d;
-        //rotMat = new Mat(2, 3, CvType.CV_32FC1);
         rotMat = Imgproc.getRotationMatrix2D(center, angle, scale);
         Imgproc.warpAffine(srcMat, dstMat, rotMat, new Size(dstMat.width(), dstMat.height()));
-        //*/
+        */
 
-        /* 变换二
-        //数组声明
+        //透视变换
         Point srcPoint0 = new Point(0, 0);
         Point srcPoint1 = new Point(srcMat.width() - 1, 0);
         Point srcPoint2 = new Point(0, srcMat.height() - 1);
@@ -53,10 +50,8 @@ public class affineTest : MonoBehaviour
         Point dstPoint2 = new Point(srcMat.width() * 0.2d, srcMat.height() * 0.7d);
         Point dstPoint3 = new Point(srcMat.width() * 0.8d, srcMat.height() * 0.9d);
         MatOfPoint2f dstTri = new MatOfPoint2f(new Point[4] { dstPoint0, dstPoint1, dstPoint2, dstPoint3 });
-
         warpMat = Imgproc.getPerspectiveTransform(srcTri, dstTri);
         Imgproc.warpPerspective(srcMat, dstMat, warpMat, new Size(dstMat.width(), dstMat.height()));
-        */
 
         Texture2D t2d = new Texture2D(dstMat.width(), dstMat.height());
         Utils.matToTexture2D(dstMat, t2d);

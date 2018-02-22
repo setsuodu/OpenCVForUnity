@@ -28,7 +28,7 @@ public class Compose : MonoBehaviour
         Imgproc.cvtColor(dstMat, dstMat, Imgproc.COLOR_BGR2RGB);
 
         Mat bgmat_roi = new Mat(dstMat, new OpenCVForUnity.Rect(840, 340, srcMat.cols(), srcMat.rows())); //不能超出边际，unity会奔溃
-        cvAdd4cMat_q(bgmat_roi, srcMat, 1.0);
+        cvAdd4cMat(bgmat_roi, srcMat, 1.0);
 
         Texture2D texture = new Texture2D(dstMat.cols(), dstMat.rows(), TextureFormat.RGBA32, false);
         Utils.matToTexture2D(dstMat, texture);
@@ -36,7 +36,7 @@ public class Compose : MonoBehaviour
         return texture;
     }
 
-    private bool cvAdd4cMat_q(Mat dst, Mat scr, double scale)
+    private bool cvAdd4cMat(Mat dst, Mat scr, double scale)
     {
         if (dst.channels() != 3 || scr.channels() != 4)
         {
