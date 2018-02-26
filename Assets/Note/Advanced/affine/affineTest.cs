@@ -16,7 +16,7 @@ public class affineTest : MonoBehaviour
 
         dstMat = srcMat.clone();
 
-        /* 仿射变换
+        ///* 仿射变换
         Point srcPoint0 = new Point(0, 0);
         Point srcPoint1 = new Point(srcMat.width() - 1, 0);
         Point srcPoint2 = new Point(0, srcMat.height() - 1);
@@ -27,7 +27,7 @@ public class affineTest : MonoBehaviour
         MatOfPoint2f dstTri = new MatOfPoint2f(new Point[3] { dstPoint0, dstPoint1, dstPoint2 });
         warpMat = Imgproc.getAffineTransform(srcTri, dstTri);
         Imgproc.warpAffine(srcMat, dstMat, warpMat, new Size(dstMat.width(), dstMat.height()));
-        */
+        //*/
 
         /* 旋转变换
         //拷贝整个画布
@@ -39,6 +39,7 @@ public class affineTest : MonoBehaviour
         Imgproc.warpAffine(srcMat, dstMat, rotMat, new Size(dstMat.width(), dstMat.height()));
         */
 
+        /*
         //透视变换
         Point srcPoint0 = new Point(0, 0);
         Point srcPoint1 = new Point(srcMat.width() - 1, 0);
@@ -52,6 +53,7 @@ public class affineTest : MonoBehaviour
         MatOfPoint2f dstTri = new MatOfPoint2f(new Point[4] { dstPoint0, dstPoint1, dstPoint2, dstPoint3 });
         warpMat = Imgproc.getPerspectiveTransform(srcTri, dstTri);
         Imgproc.warpPerspective(srcMat, dstMat, warpMat, new Size(dstMat.width(), dstMat.height()));
+        */
 
         Texture2D t2d = new Texture2D(dstMat.width(), dstMat.height());
         Utils.matToTexture2D(dstMat, t2d);

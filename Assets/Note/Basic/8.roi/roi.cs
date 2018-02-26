@@ -56,7 +56,7 @@ public class roi : MonoBehaviour
         // Offset points by left top corner of the respective rectangles
         OpenCVForUnity.Rect r1 = Imgproc.boundingRect(pts1);
         OpenCVForUnity.Rect r2 = Imgproc.boundingRect(pts2);
-        Debug.Log(r1); //{0, 0, 257x257}
+        //Debug.Log(r1); //{0, 0, 257x257}
         MatOfPoint2f t1Rect = new MatOfPoint2f();
         MatOfPoint2f t2Rect = new MatOfPoint2f();
         MatOfPoint t2RectInt = new MatOfPoint();
@@ -67,20 +67,33 @@ public class roi : MonoBehaviour
             t2Rect.push_back(new Mat((int)pts2.toList()[i].x - r2.x, (int)pts2.toList()[i].y - r2.y, 0));
             t2RectInt.push_back(new Mat((int)pts2.toList()[i].x - r2.x, (int)pts2.toList()[i].y - r2.y, 0)); // for fillConvexPoly
         }
-        Debug.Log(t1Rect);
+        Debug.Log(t2RectInt);
+        //Debug.Log(r2.height + "," + r2.width);
 
         // Get mask by filling triangle
-        Mat _mask = Mat.zeros(r2.height, r2.width, CvType.CV_32FC3);
-        Imgproc.fillConvexPoly(_mask, t2RectInt, new Scalar(1.0, 1.0, 1.0), 16, 0);
+        //Mat _mask = Mat.zeros(r2.height, r2.width, CvType.CV_32FC3);
+        //Imgproc.fillConvexPoly(_mask, t2RectInt, new Scalar(1.0, 1.0, 1.0), 16, 0);
+
+        MatOfPoint PointArray = new MatOfPoint();
+        Mat src = Mat.zeros(480, 640, CvType.CV_8UC3);
+        PointArray.fromList(new List<Point>()
+        {
+            new Point(50,10),
+            new Point(300,12),
+            new Point(350,250),
+            new Point(9,250),
+        });
+        Debug.Log(PointArray);
+        Imgproc.fillConvexPoly(src, PointArray, new Scalar(255, 0, 0), 4, 0);
 
         // Apply warpImage to small rectangular patches
 
         //------------------------------------------------//
 
-        srcMat.copyTo(roiMat, mask);
+        //srcMat.copyTo(roiMat, mask);
 
-        Texture2D dst_t2d = new Texture2D(roiMat.width(), roiMat.height());
-        Utils.matToTexture2D(roiMat, dst_t2d);
+        Texture2D dst_t2d = new Texture2D(src.width(), src.height());
+        Utils.matToTexture2D(src, dst_t2d);
         Sprite sp = Sprite.Create(dst_t2d, new UnityEngine.Rect(0, 0, dst_t2d.width, dst_t2d.height), Vector2.zero);
         m_roiImage.sprite = sp;
         m_roiImage.preserveAspect = true;
