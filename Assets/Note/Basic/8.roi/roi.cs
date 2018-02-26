@@ -9,9 +9,6 @@ public class roi : MonoBehaviour
     [SerializeField] private RawImage m_srcImage; //注意不能用Image，会破坏Rect
     [SerializeField] private Image m_roiImage;
     Mat srcMat;
-    OpenCVForUnity.Point cv_point;
-    OpenCVForUnity.Size cv_size;
-    OpenCVForUnity.Rect cv_rect; //感兴趣区域ROI
 
     void Start()
     {
@@ -37,15 +34,15 @@ public class roi : MonoBehaviour
         */
 
         Mat mask = Mat.zeros(srcMat.size(), CvType.CV_8UC1);
-        Point p0 = new Point(30, 45);
-        Point p1 = new Point(500, 35);
-        Point p2 = new Point(430, 240);
-        Point p3 = new Point(50, 250);
-        Point p4 = new Point(100, 250);
-        Point p5 = new Point(75, 100);
-        MatOfPoint pts = new MatOfPoint(new Point[3] { p0, p1, p2 });
+        Point p0 = new Point(0, 0);
+        Point p1 = new Point(0, 256);
+        Point p2 = new Point(256, 0);
+        MatOfPoint pts1 = new MatOfPoint(new Point[3] { p0, p1, p2 });
+        Point p3 = new Point(256, 0);
+        Point p4 = new Point(512, 0);
+        Point p5 = new Point(512, 256);
         MatOfPoint pts2 = new MatOfPoint(new Point[3] { p3, p4, p5 });
-        List<MatOfPoint> contour = new List<MatOfPoint>() { pts, pts2 };
+        List<MatOfPoint> contour = new List<MatOfPoint>() { pts1, pts2 };
 
         //轮廓提取
         Mat roiMat = new Mat();
@@ -53,6 +50,33 @@ public class roi : MonoBehaviour
         {
             Imgproc.drawContours(mask, contour, i, new Scalar(255), -1); //全部放到mask上
         }
+
+        //------------------------------------------------//
+
+        // Offset points by left top corner of the respective rectangles
+        OpenCVForUnity.Rect r1 = Imgproc.boundingRect(pts1);
+        OpenCVForUnity.Rect r2 = Imgproc.boundingRect(pts2);
+        Debug.Log(r1); //{0, 0, 257x257}
+        MatOfPoint2f t1Rect = new MatOfPoint2f();
+        MatOfPoint2f t2Rect = new MatOfPoint2f();
+        MatOfPoint t2RectInt = new MatOfPoint();
+
+        for (int i = 0; i < 3; i++)
+        {
+            t1Rect.push_back(new Mat((int)pts1.toList()[i].x - r1.x, (int)pts1.toList()[i].y - r1.y, 0));
+            t2Rect.push_back(new Mat((int)pts2.toList()[i].x - r2.x, (int)pts2.toList()[i].y - r2.y, 0));
+            t2RectInt.push_back(new Mat((int)pts2.toList()[i].x - r2.x, (int)pts2.toList()[i].y - r2.y, 0)); // for fillConvexPoly
+        }
+        Debug.Log(t1Rect);
+
+        // Get mask by filling triangle
+        Mat _mask = Mat.zeros(r2.height, r2.width, CvType.CV_32FC3);
+        Imgproc.fillConvexPoly(_mask, t2RectInt, new Scalar(1.0, 1.0, 1.0), 16, 0);
+
+        // Apply warpImage to small rectangular patches
+
+        //------------------------------------------------//
+
         srcMat.copyTo(roiMat, mask);
 
         Texture2D dst_t2d = new Texture2D(roiMat.width(), roiMat.height());
@@ -60,5 +84,6 @@ public class roi : MonoBehaviour
         Sprite sp = Sprite.Create(dst_t2d, new UnityEngine.Rect(0, 0, dst_t2d.width, dst_t2d.height), Vector2.zero);
         m_roiImage.sprite = sp;
         m_roiImage.preserveAspect = true;
+
     }
 }
