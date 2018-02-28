@@ -6,18 +6,20 @@ using OpenCVForUnity;
 
 namespace OpenCVForUnity
 {
-    /// <summary>
-    /// 掩膜mask
-    /// </summary>
-    public class CvMask : MonoBehaviour
+    public class watermark : MonoBehaviour
     {
         [SerializeField] private Image m_srcImage, m_dstImage;
-        Mat srcMat, dstMat, detected_edges;
+        Mat srcMat, dstMat, logoMat;
 
         void Start()
         {
             srcMat = Imgcodecs.imread(Application.dataPath + "/Textures/lena.jpg", 1); //512,512
             Imgproc.cvtColor(srcMat, srcMat, Imgproc.COLOR_BGR2RGB);
+            logoMat = Imgcodecs.imread(Application.dataPath + "/Textures/head.png", 1);
+            Imgproc.cvtColor(logoMat, logoMat, Imgproc.COLOR_BGR2RGB);
+
+            Mat ROI = srcMat.submat(new Rect(20, 20, logoMat.cols(), logoMat.rows()));
+            logoMat.copyTo(ROI);//logo复制到ROI上面
 
             Texture2D t2d = new Texture2D(srcMat.width(), srcMat.height());
             Utils.matToTexture2D(srcMat, t2d);
@@ -32,25 +34,7 @@ namespace OpenCVForUnity
 
             dstMat = Imgcodecs.imread(Application.dataPath + "/Textures/0.jpg", 1); //500,500
             Imgproc.cvtColor(dstMat, dstMat, Imgproc.COLOR_BGR2RGB);
-            //dstMat = new Mat();
-            Mat grayMat = new Mat();
-            detected_edges = new Mat();
-            double threshold1 = 1;
-            double threshold2 = 100;
-            int kernel_size = 3;
-            //使用 3x3内核降噪
-            Imgproc.cvtColor(srcMat, grayMat, Imgproc.COLOR_RGB2GRAY);
-            Imgproc.blur(grayMat, detected_edges, new Size(3, 3));
-            Imgproc.Canny(detected_edges, detected_edges, threshold1, threshold2, kernel_size, false);
-
-            //使用 Canny算子输出边缘作为掩码显示原图像  
-            //dstMat.setTo(new Scalar(0));
             Imgproc.resize(dstMat, dstMat, srcMat.size());
-            //srcMat.copyTo(dstMat, detected_edges); //保证srcMat,dstMat是一样大的
-            //左.copyTo(中, 右); //左作为像素源，右作为mask，合成到中
-
-            OpenCVForUnity.Rect rect = new OpenCVForUnity.Rect(25, 25, 125, 200);
-            srcMat.submat(rect).copyTo(dstMat);
 
             Texture2D dst_t2d = new Texture2D(dstMat.width(), dstMat.height());
             Utils.matToTexture2D(dstMat, dst_t2d);
