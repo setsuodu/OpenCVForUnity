@@ -226,6 +226,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   srcImage: {fileID: 1721988560}
   dstImage: {fileID: 1378883397}
+  pointList: []
+  dstPointList: []
 --- !u!1 &553942307
 GameObject:
   m_ObjectHideFlags: 0
@@ -401,8 +403,8 @@ RectTransform:
   m_Father: {fileID: 450146744}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 1, y: 2}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}

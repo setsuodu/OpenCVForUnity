@@ -24,7 +24,7 @@ public class roi : MonoBehaviour
         m_srcImage.rectTransform.offsetMax = new Vector2(srcMat.width(), srcMat.height());
         m_srcImage.rectTransform.anchoredPosition = Vector2.zero;
 
-        Mat mask = Mat.zeros(srcMat.size(), CvType.CV_8UC1);
+        Mat mask = Mat.zeros(srcMat.size(), CvType.CV_8UC1); //注意CvType必须是CV_8UC1
         Point p0 = new Point(0, 0);
         Point p1 = new Point(0, 256);
         Point p2 = new Point(256, 0);
@@ -55,14 +55,12 @@ public class roi : MonoBehaviour
         MatOfPoint2f t1Rect = new MatOfPoint2f();
         MatOfPoint2f t2Rect = new MatOfPoint2f();
         MatOfPoint t2RectInt = new MatOfPoint();
-
         for (int i = 0; i < 3; i++)
         {
             t1Rect.push_back(new Mat((int)pts1.toList()[i].x - r1.x, (int)pts1.toList()[i].y - r1.y, 0));
             t2Rect.push_back(new Mat((int)pts2.toList()[i].x - r2.x, (int)pts2.toList()[i].y - r2.y, 0));
             t2RectInt.push_back(new Mat((int)pts2.toList()[i].x - r2.x, (int)pts2.toList()[i].y - r2.y, 0)); // for fillConvexPoly
         }
-        Debug.Log(t2RectInt);
         
         MatOfPoint PointArray = new MatOfPoint();
         dstMat = Mat.zeros(srcMat.size(), CvType.CV_8UC3);

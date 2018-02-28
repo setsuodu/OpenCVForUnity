@@ -19,7 +19,8 @@ namespace FaceSwapperExample
         [SerializeField] private Image srcImage;
         [SerializeField] private Image dstImage;
         Mat rgbaMat, dstMat;
-        List<Point> pointList;
+        [SerializeField] private List<Point> pointList;
+        [SerializeField] private List<Point> dstPointList;
 
         void Start()
         {
@@ -60,7 +61,7 @@ namespace FaceSwapperExample
                 Imgproc.circle(rgbaMat, pt, 0, new Scalar(0, 255, 0, 255), 2, Imgproc.LINE_8, 0); //绘制68点
                 pointList.Add(pt);
             }
-            //Debug.Log(pointList.Count);
+            //Debug.Log(pointList.Count); //68
 
             //3. 三角剖份
             TriangleDivide();
@@ -81,24 +82,68 @@ namespace FaceSwapperExample
                 hullPointList.Add(pointMatList[hullIntList[j]]);
             }
             MatOfPoint hullPointMat = new MatOfPoint();
-            hullPointMat.fromList(hullPointList);
+            hullPointMat.fromList(hullPointList); //23*1
             List<MatOfPoint> hullPoints = new List<MatOfPoint>();
-            hullPoints.Add(hullPointMat);
+            hullPoints.Add(hullPointMat); //1
             Imgproc.drawContours(rgbaMat, hullPoints, -1, new Scalar(255, 255, 0, 255), 2);
 
-            Texture2D t2d = new Texture2D(rgbaMat.cols(), rgbaMat.rows(), TextureFormat.RGBA32, false);
+            //------------------------------------------------//
+            //Try---------------------------------------------//
+
+            dstPointList = new List<Point>();
+            for (int i = 0; i < pointList.Count; i++)
+            {
+                Point pt = pointList[i] + new Point(100, 0);
+                dstPointList.Add(pt);
+            }
+            //MatOfPoint2f srcTri = new MatOfPoint2f(); //不能超过3
+            //MatOfPoint2f dstTri = new MatOfPoint2f(); //不能超过3
+            //srcTri.fromList(pointList);
+            //srcTri.fromList(dstPointList);
+            for (int j = 0; j < 3; j++)
+            {
+                //srcTri.push_back(hullPointMat);
+                //dstTri.push_back(hull2[corpd.index[j]]);
+            }
+
+
+            Mat mask = Mat.zeros(rgbaMat.size(), CvType.CV_8UC1);
+            Point p0 = new Point(0, 0);
+            Point p1 = new Point(0, 256);
+            Point p2 = new Point(256, 0);
+            Point p3 = new Point(256, 0);
+            Point p4 = new Point(512, 0);
+            Point p5 = new Point(512, 256);
+            Point p6 = new Point(256, 64);
+            MatOfPoint pts1 = new MatOfPoint(new Point[3] { p0, p1, p2 });
+            MatOfPoint pts2 = new MatOfPoint(new Point[3] { p3, p4, p5 });
+            MatOfPoint2f srcTri = new MatOfPoint2f(new Point[3] { p0, p1, p2 });
+            MatOfPoint2f dstTri = new MatOfPoint2f(new Point[3] { p0, p1, p6 });
+            List<MatOfPoint> contour = new List<MatOfPoint>() { pts1 };
+            for (int i = 0; i < contour.Count; i++)
+            {
+                //轮廓提取
+                Imgproc.drawContours(mask, contour, i, new Scalar(255), -1); //全部放到mask上
+            }
+            rgbaMat.copyTo(mask, mask);
+            Mat warpMat = Imgproc.getAffineTransform(srcTri, dstTri);
+            Mat warpImage = Mat.zeros(mask.size(), mask.type());
+            Imgproc.warpAffine(mask, warpImage, warpMat, warpImage.size());
+
+            //------------------------------------------------//
+
+            Texture2D t2d = new Texture2D(rgbaMat.width(), rgbaMat.height(), TextureFormat.RGBA32, false);
             OpenCVForUnity.Utils.matToTexture2D(rgbaMat, t2d);
             Sprite sp = Sprite.Create(t2d, new UnityEngine.Rect(0, 0, t2d.width, t2d.height), Vector2.zero);
             srcImage.sprite = sp;
             srcImage.preserveAspect = true;
 
-            /*
-            Texture2D dst_t2d = new Texture2D(dstMat.cols(), dstMat.rows(), TextureFormat.RGBA32, false);
-            OpenCVForUnity.Utils.matToTexture2D(dstMat, dst_t2d);
+            //warpImage
+            Texture2D dst_t2d = new Texture2D(warpImage.width(), warpImage.height(), TextureFormat.RGBA32, false);
+            OpenCVForUnity.Utils.matToTexture2D(warpImage, dst_t2d);
             Sprite dst_sp = Sprite.Create(dst_t2d, new UnityEngine.Rect(0, 0, dst_t2d.width, dst_t2d.height), Vector2.zero);
             dstImage.sprite = dst_sp;
             dstImage.preserveAspect = true;
-            */
         }
 
         void TriangleDivide()
