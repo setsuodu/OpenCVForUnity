@@ -8,8 +8,8 @@ namespace OpenCVForUnity
 {
     public class watermark : MonoBehaviour
     {
-        [SerializeField] private Image m_srcImage, m_dstImage;
-        Mat srcMat, dstMat, logoMat;
+        [SerializeField] private Image m_srcImage;
+        Mat srcMat, logoMat;
 
         void Start()
         {
@@ -29,21 +29,6 @@ namespace OpenCVForUnity
             m_srcImage.rectTransform.offsetMin = new Vector2(0, 0);
             m_srcImage.rectTransform.offsetMax = new Vector2(t2d.width, t2d.height);
             m_srcImage.rectTransform.anchoredPosition = Vector2.zero;
-
-            //--------------------------------------------------//
-
-            dstMat = Imgcodecs.imread(Application.dataPath + "/Textures/0.jpg", 1); //500,500
-            Imgproc.cvtColor(dstMat, dstMat, Imgproc.COLOR_BGR2RGB);
-            Imgproc.resize(dstMat, dstMat, srcMat.size());
-
-            Texture2D dst_t2d = new Texture2D(dstMat.width(), dstMat.height());
-            Utils.matToTexture2D(dstMat, dst_t2d);
-            Sprite dst_sp = Sprite.Create(dst_t2d, new UnityEngine.Rect(0, 0, dst_t2d.width, dst_t2d.height), Vector2.zero);
-            m_dstImage.sprite = dst_sp;
-            m_dstImage.preserveAspect = true;
-            m_dstImage.rectTransform.offsetMin = new Vector2(0, 0);
-            m_dstImage.rectTransform.offsetMax = new Vector2(dst_t2d.width, dst_t2d.height);
-            m_dstImage.rectTransform.anchoredPosition = Vector2.zero;
         }
     }
 }
