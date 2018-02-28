@@ -150,7 +150,8 @@ namespace FaceSwapperExample
         {
             //init subdiv
             Subdiv2D subdiv = new Subdiv2D();
-            subdiv.initDelaunay(new OpenCVForUnity.Rect(0, 0, rgbaMat.width(), rgbaMat.height()));
+            OpenCVForUnity.Rect cv_rect = new OpenCVForUnity.Rect(0, 0, rgbaMat.width(), rgbaMat.height());
+            subdiv.initDelaunay(cv_rect);
             for (int i = 0; i < pointList.Count; i++)
             {
                 subdiv.insert(pointList[i]);
@@ -164,7 +165,8 @@ namespace FaceSwapperExample
             subdiv.insert(new Point(0, rgbaMat.height() - 1));
             subdiv.insert(new Point(0, rgbaMat.height() / 2 - 1));
 
-            using (MatOfFloat6 triangleList = new MatOfFloat6())
+            //using (MatOfFloat6 triangleList = new MatOfFloat6())
+            MatOfFloat6 triangleList = new MatOfFloat6();
             {
                 subdiv.getTriangleList(triangleList);
                 float[] pointArray = triangleList.toArray();
@@ -205,6 +207,46 @@ namespace FaceSwapperExample
                     Imgproc.line(rgbaMat, p0, p1, new Scalar(64, 255, 128, 255));
                     Imgproc.line(rgbaMat, p1, p2, new Scalar(64, 255, 128, 255));
                     Imgproc.line(rgbaMat, p2, p0, new Scalar(64, 255, 128, 255));
+
+                    //--------------------------------------------------------------------//
+
+                    //Debug.Log(pointArray.Length / 6); //154 //（68dlib点+周围8点 => 154个三角形）
+                    //Point[] pt = new Point[3];
+                    //pt[0] = new Point(t[0], t[1]);
+                    //pt[1] = new Point(t[2], t[3]);
+                    //pt[2] = new Point(t[4], t[5]);
+                    //Debug.Log("[0]" + pt[0] + "[1]" + pt[1] + "[2]" + pt[2]);
+
+                    Point[] pt = new Point[3] { p0, p1, p2 };
+                    //Debug.Log("[0]" + p0 + "[1]" + p1 + "[2]" + p2);
+
+                    //Debug.Log(cv_rect); //800*400，rgba图的尺寸
+                    if (cv_rect.contains(p0) && cv_rect.contains(p1) && cv_rect.contains(p2))
+                    {
+                        int count = 0;
+                        int[] ind = new int[3];
+                        for (int j = 0; j < 3; j++)
+                        {
+                            for (int k = 0; k < pointList.Count; k++)
+                            {
+                                if (Mathf.Abs((float)pt[j].x - (float)pointList[k].x) < 1.0 && Mathf.Abs((float)pt[j].y - (float)pointList[k].y) < 1.0)
+                                {
+                                    ind[j] = k;
+                                    count++;
+                                    //Debug.Log(count);
+                                }
+                            }
+                        }
+
+                        if (count == 3)
+                        {
+                            //Debug.Log("ccc");
+                            //154中筛选109个满足
+                            //delaunayTri.push_back(ind);
+                        }
+                    }
+
+                    //--------------------------------------------------------------------//
                 }
                 //subdiv.getVoronoiFacetList();
             }
