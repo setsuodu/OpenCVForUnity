@@ -97,6 +97,5 @@ public class roi : MonoBehaviour
         Sprite sp = Sprite.Create(dst_t2d, new UnityEngine.Rect(0, 0, dst_t2d.width, dst_t2d.height), Vector2.zero);
         m_roiImage.sprite = sp;
         m_roiImage.preserveAspect = true;
-
     }
 }

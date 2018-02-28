@@ -31,20 +31,6 @@ public class Binaryzation : MonoBehaviour
     void Start()
     {
         srcMat = Imgcodecs.imread(Application.dataPath + "/Textures/kizuna.jpg", 1);
-        /*
-        List<Mat> channels = new List<Mat>();
-        Core.split(srcMat, channels);
-        Mat imageRed = new Mat();
-        imageRed = channels[0];
-        Mat imageGreen = new Mat();
-        imageGreen = channels[1];
-        Mat imageBlue = new Mat();
-        imageBlue = channels[2];
-        channels[0] = channels[2];
-        channels[2] = imageRed;
-        Mat mergeImage = new Mat();
-        Core.merge(channels, srcMat);
-        */
         Imgproc.cvtColor(srcMat, srcMat, Imgproc.COLOR_BGR2RGB); //转RGB
         aspectRatioFitter.aspectRatio = (float)srcMat.width() / (float)srcMat.height();
 
