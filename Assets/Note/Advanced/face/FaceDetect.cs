@@ -67,7 +67,7 @@ public class FaceDetect : MonoBehaviour
 
         Mat imgMat = Imgcodecs.imread(Application.dataPath + "/Textures/face.jpg");
         Imgproc.cvtColor(imgMat, imgMat, Imgproc.COLOR_BGR2RGB);
-        OpenCVForUnityUtils.SetImage(faceLandmarkDetector, imgMat);
+        FaceSwapperExample.OpenCVForUnityUtils.SetImage(faceLandmarkDetector, imgMat);
 
         //detect face rectdetecton
         List<FaceLandmarkDetector.RectDetection> detectResult = faceLandmarkDetector.DetectRectDetection();
@@ -87,10 +87,10 @@ public class FaceDetect : MonoBehaviour
 
             Debug.Log("face points count : " + points.Count);
             //draw landmark points
-            OpenCVForUnityUtils.DrawFaceLandmark(imgMat, points, new Scalar(0, 255, 0, 255), 1); //线，不是点
+            FaceSwapperExample.OpenCVForUnityUtils.DrawFaceLandmark(imgMat, points, new Scalar(0, 255, 0, 255), 1); //线，不是点
 
             //draw face rect
-            OpenCVForUnityUtils.DrawFaceRect(imgMat, result.rect, new Scalar(255, 0, 0, 255), 1);
+            FaceSwapperExample.OpenCVForUnityUtils.DrawFaceRect(imgMat, result.rect, new Scalar(255, 0, 0, 255), 1);
         }
         faceLandmarkDetector.Dispose();
 

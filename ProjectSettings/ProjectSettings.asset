@@ -4,7 +4,7 @@
 PlayerSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 14
-  productGUID: 63023d10aed70c641aa26f2cf9cef6c6
+  productGUID: 00000000000000000000000000000000
   AndroidProfiler: 0
   AndroidFilterTouchesWhenObscured: 0
   defaultScreenOrientation: 4
@@ -268,7 +268,7 @@ PlayerSettings:
       m_Icon: {fileID: 0}
       m_Width: 128
       m_Height: 128
-      m_Kind: 42531
+      m_Kind: 45119
   - m_BuildTarget: Android
     m_Icons:
     - serializedVersion: 2
@@ -686,10 +686,10 @@ PlayerSettings:
       daydreamIconForeground: {fileID: 0}
       daydreamIconBackground: {fileID: 0}
   cloudServicesEnabled: {}
-  facebookSdkVersion: 7.9.4
+  facebookSdkVersion: 
   apiCompatibilityLevel: 2
   cloudProjectId: 09003a7c-e7d8-49ab-be68-844cd97261d6
-  projectName: OpencvForUnity
+  projectName: 
   organizationId: seol-michael
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0

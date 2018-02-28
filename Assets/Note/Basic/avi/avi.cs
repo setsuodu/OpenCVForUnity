@@ -12,11 +12,11 @@ namespace OpenCVForUnityExample
         private Texture2D t2d;
         Mat rgbMat = new Mat();
         Color32[] colors;
-        VideoCapture capture;
+        OpenCVForUnity.VideoCapture capture;
 
         void Start()
         {
-            capture = new VideoCapture();
+            capture = new OpenCVForUnity.VideoCapture();
             capture.open(Utils.getFilePath("dance.avi"));
             if (capture.isOpened())
             {
