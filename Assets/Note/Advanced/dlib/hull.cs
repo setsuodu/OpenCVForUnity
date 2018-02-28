@@ -161,6 +161,7 @@ namespace FaceSwapperExample
                     Imgproc.line(rgbaMat, p1, p2, new Scalar(64, 255, 128, 255));
                     Imgproc.line(rgbaMat, p2, p0, new Scalar(64, 255, 128, 255));
                 }
+                //subdiv.getVoronoiFacetList();
             }
         }
 
