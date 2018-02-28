@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using OpenCVForUnity;
 
-public class PerspConvert : MonoBehaviour
+public class PerspTransform : MonoBehaviour
 {
     private Mat inputMat, outputMat;
     [SerializeField] private RawImage output;

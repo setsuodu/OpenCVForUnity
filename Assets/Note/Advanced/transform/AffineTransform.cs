@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using OpenCVForUnity;
 
-public class affineTest : MonoBehaviour
+public class AffineTransform : MonoBehaviour
 {
     Mat srcMat, dstMat, warpMat, rotMat;
     [SerializeField] private Image dstImage;
