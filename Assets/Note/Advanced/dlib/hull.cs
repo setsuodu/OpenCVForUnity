@@ -216,7 +216,6 @@ namespace FaceSwapperExample
                     //pt[1] = new Point(t[2], t[3]);
                     //pt[2] = new Point(t[4], t[5]);
                     //Debug.Log("[0]" + pt[0] + "[1]" + pt[1] + "[2]" + pt[2]);
-
                     Point[] pt = new Point[3] { p0, p1, p2 };
                     //Debug.Log("[0]" + p0 + "[1]" + p1 + "[2]" + p2);
 
@@ -224,25 +223,23 @@ namespace FaceSwapperExample
                     if (cv_rect.contains(p0) && cv_rect.contains(p1) && cv_rect.contains(p2))
                     {
                         int count = 0;
-                        int[] ind = new int[3];
+                        int[] index = new int[3];
                         for (int j = 0; j < 3; j++)
                         {
                             for (int k = 0; k < pointList.Count; k++)
                             {
-                                if (Mathf.Abs((float)pt[j].x - (float)pointList[k].x) < 1.0 && Mathf.Abs((float)pt[j].y - (float)pointList[k].y) < 1.0)
+                                if (Mathf.Abs((float)pt[j].x - (float)pointList[k].x) < 1.0 && Mathf.Abs((float)pt[j].y - (float)pointList[k].y) < 1.0) //重合
                                 {
-                                    ind[j] = k;
+                                    index[j] = k;
                                     count++;
-                                    //Debug.Log(count);
                                 }
                             }
                         }
 
                         if (count == 3)
                         {
-                            //Debug.Log("ccc");
-                            //154中筛选109个满足
-                            //delaunayTri.push_back(ind);
+                            //154中筛选109个，满足3个点重合
+                            //delaunayTri.push_back(index);
                         }
                     }
 
