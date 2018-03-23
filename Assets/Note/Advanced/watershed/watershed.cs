@@ -29,8 +29,7 @@ public class watershed : MonoBehaviour
         m_dstImage.sprite = sp;
     }
 
-
-    // threshold根据反差去掉深色单色背景  
+    // threshold根据反差去掉深色单色背景
     public static Mat removeBackground(Mat nat)
     {
         Mat m = new Mat();
@@ -61,7 +60,7 @@ public class watershed : MonoBehaviour
         return fin;
     }
 
-    // threshold根据亮度去除背景  
+    // threshold根据亮度去除背景
     private static Mat MyThresholdHsv(Mat frame)
     {
         Mat hsvImg = new Mat();
@@ -93,7 +92,7 @@ public class watershed : MonoBehaviour
         return foreground;
     }
 
-    //grabCut分割技术  
+    //grabCut分割技术
     public static Mat myGrabCut(Mat src, Point tl, Point br)
     {
         Mat mask = new Mat();
@@ -114,7 +113,7 @@ public class watershed : MonoBehaviour
         return foreground;
     }
 
-    //findContours分割技术  
+    //findContours分割技术
     private static Mat MyFindLargestRectangle(Mat original_image)
     {
         Mat imgSource = original_image;
@@ -149,7 +148,7 @@ public class watershed : MonoBehaviour
         return imgSource;
     }
 
-    //watershed分水岭分割技术  
+    //watershed分水岭分割技术
     public static Mat MyWatershed(Mat img)
     {
         Mat threeChannel = new Mat();
@@ -176,7 +175,7 @@ public class watershed : MonoBehaviour
         return result;
     }
 
-    //Canny分割技术  
+    //Canny分割技术
     public static Mat MyCanny(Mat img, int threshold)
     {
         Imgproc.cvtColor(img, img, Imgproc.COLOR_BGR2GRAY);
@@ -184,12 +183,19 @@ public class watershed : MonoBehaviour
         return img;
     }
 
-    //漫水填充  
+    //漫水填充
     public static Mat MyFloodFill(Mat img)
     {
         OpenCVForUnity.Rect ccomp = new OpenCVForUnity.Rect();
         Mat mask = new Mat();
         Imgproc.floodFill(img, mask, new Point(50, 20), new Scalar(0, 0, 0), ccomp, new Scalar(10, 10, 10), new Scalar(10, 10, 10), 0);
+
+        return img;
+    }
+
+    //黑色转透明
+    public static Mat BlackToAlpha(Mat img)
+    {
 
         return img;
     }
