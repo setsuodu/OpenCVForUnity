@@ -27,6 +27,7 @@ public class watershed : MonoBehaviour
         Utils.matToTexture2D(dstMat, t2d);
         Sprite sp = Sprite.Create(t2d, new UnityEngine.Rect(0, 0, t2d.width, t2d.height), Vector2.zero);
         m_dstImage.sprite = sp;
+        m_dstImage.preserveAspect = true;
     }
 
     // threshold根据反差去掉深色单色背景
